@@ -16,9 +16,9 @@ paths:
   /api.test:
     post:
       tags:
-        - Tier 4
+        - Test
       summary: Checks API calling code.
-      description: 'This method helps you test your calling code.'
+      description: 'Tier 4: This method helps you test your calling code.'
       operationId: apiTest
       parameters:
         - name: error
@@ -42,6 +42,7 @@ paths:
                 $ref: '#/components/schemas/ApiTestResponse'
       requestBody:
         $ref: '#/components/requestBodies/EmptyBody'
+
 externalDocs:
   description: Find out more about Slack API
   url: 'https://api.slack.com/'
