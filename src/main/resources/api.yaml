@@ -73,7 +73,7 @@ components:
         args:
           $ref: '#/components/schema/ApiTestArgsResponse'
     ApiTestArgsResponse:
-      title:
+      title: Response object for api.test endpoint
       description:
       type: object
       properties:
