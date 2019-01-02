@@ -85,13 +85,14 @@ components:
       title: Empty request body object
       description: Empty request body object
       type: object
-    Event:
+    EventPayload:
       title: Event object received from slack events api
       description: The event types sent to you are directly tied to the OAuth permission scopes awarded as users install your Slack App.
       discriminator:
         propertyName: type
         mapping:
           app_rate_limited: '#/components/schemas/AppRateLimited'
+          event_callback: '#/components/schemas/EventCallback'
       required:
         - token
         - team_id
@@ -108,9 +109,77 @@ components:
           type: string
     AppRateLimited:
       allOf:
-        - $ref: '#/components/schemas/Event'
+        - $ref: '#/components/schemas/EventPayload'
         - type: object
+          required:
+            - minute_rate_limited
           properties:
             minute_rate_limited:
               type: integer
               format: int64
+    EventCallback:
+      allOf:
+        - $ref: '#/components/schemas/EventPayload'
+        - type: object
+          required:
+            - event
+            - event_id
+            - event_time
+            - authed_users
+          properties:
+            event:
+              $ref: '#/components/schemas/BaseEvent'
+            event_id:
+              type: string
+            event_time:
+              type: integer
+              format: int64
+            authed_users:
+              type: array
+              items:
+                type: string
+    BaseEvent:
+      title: BaseEvent object to all slack events
+      description: The BaseEvent object used to deserialize all sub-events received from Slack Events Api.
+      discriminator:
+        propertyName: type
+        mapping:
+          reaction_added: '#/components/schemas/ReactionAdded'
+      required:
+        - type
+        - event_ts
+        - user
+        - ts
+      properties:
+        event_ts:
+          type: string
+        user:
+          type: string
+        ts:
+          type: string
+        type:
+          type: string
+    ReactionAdded:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - reaction
+            - item_user
+            - item
+          properties:
+            reaction:
+              type: string
+            item_user:
+              type: string
+            item:
+              $ref: '#/components/schemas/ReactionAddedItem'
+    ReactionAddedItem:
+      type: object
+      properties:
+        type:
+          type: string
+        channel:
+          type: string
+        ts:
+          type: string
