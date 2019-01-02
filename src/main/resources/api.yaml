@@ -145,6 +145,7 @@ components:
         propertyName: type
         mapping:
           reaction_added: '#/components/schemas/ReactionAdded'
+          app_mention: '#/components/schemas/AppMention'
       required:
         - type
         - event_ts
@@ -159,6 +160,18 @@ components:
           type: string
         type:
           type: string
+    AppMention:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - text
+            - channel
+          properties:
+            text:
+              type: string
+            channel:
+              type: string
     ReactionAdded:
       allOf:
         - $ref: '#/components/schemas/BaseEvent'

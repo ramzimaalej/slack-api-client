@@ -1,5 +1,6 @@
 package io.slack.api.client.invoker
 
+import io.slack.api.client.model.AppMention
 import io.slack.api.client.model.AppRateLimited
 import io.slack.api.client.model.EventCallback
 import io.slack.api.client.model.EventPayload
@@ -98,6 +99,40 @@ class JSONUnitSpec extends Specification {
             event.event.reaction == "slightly_smiling_face"
             event.event.itemUser == "U0M4RL1NY"
             event.event.eventTs == "1465244570.336841"
+        }
+    }
+
+    def "should parse app_mention event"() {
+        given: "receive the following payload"
+        def payload = "{\n" +
+                "    \"token\": \"ZZZZZZWSxiZZZ2yIvs3peJ\",\n" +
+                "    \"team_id\": \"T061EG9R6\",\n" +
+                "    \"api_app_id\": \"A0MDYCDME\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"app_mention\",\n" +
+                "        \"user\": \"U061F7AUR\",\n" +
+                "        \"text\": \"What ever happened to <@U0LAN0Z89>?\",\n" +
+                "        \"ts\": \"1515449438.000011\",\n" +
+                "        \"channel\": \"C0LAN2Q65\",\n" +
+                "        \"event_ts\": \"1515449438000011\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"Ev0MDYGDKJ\",\n" +
+                "    \"event_time\": 1515449438000011,\n" +
+                "    \"authed_users\": [\n" +
+                "        \"U0LAN0Z89\"\n" +
+                "    ]\n" +
+                "}"
+        when: "parse the payload"
+        def event = json.deserialize(payload, EventPayload)
+        then: "an event object should be created"
+        with(event) {
+            event.event.class == AppMention.class
+            event.event.user == "U061F7AUR"
+            event.event.text == "What ever happened to <@U0LAN0Z89>?"
+            event.event.ts == "1515449438.000011"
+            event.event.channel == "C0LAN2Q65"
+            event.event.eventTs == "1515449438000011"
         }
     }
 }
