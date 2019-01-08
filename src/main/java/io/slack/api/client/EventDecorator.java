@@ -5,6 +5,11 @@ import io.slack.api.client.model.*;
 
 public final class EventDecorator {
 
+    public static final String APP_RATE_LIMITED_TYPE = "app_rate_limited";
+    public static final String EVENT_CALLBACK_TYPE = "event_callback";
+    public static final String APP_MENTION_TYPE = "app_mention";
+    public static final String REACTION_ADDED_TYPE = "reaction_added";
+
     private EventPayload event;
 
     public EventDecorator(EventPayload event) {
@@ -13,15 +18,19 @@ public final class EventDecorator {
 
     void accept(EventVisitor visitor) {
         switch (event.getType()) {
-            case "app_rate_limited": {
+            case APP_RATE_LIMITED_TYPE: {
                 visitor.visit((AppRateLimitedEvent) event);
                 break;
             }
-            case "event_callback": {
+            case EVENT_CALLBACK_TYPE: {
                 BaseEvent subEvent = ((EventCallback)event).getEvent();
                 switch (subEvent.getType()) {
-                    case "app_mention": {
+                    case APP_MENTION_TYPE: {
                         visitor.visit((AppMentionEvent) subEvent);
+                        break;
+                    }
+                    case REACTION_ADDED_TYPE: {
+                        visitor.visit((ReactionAddedEvent) subEvent);
                         break;
                     }
                     default:

@@ -4,11 +4,13 @@ import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.AppMentionEvent;
 import io.slack.api.client.model.AppRateLimitedEvent;
 import io.slack.api.client.model.EventCallback;
+import io.slack.api.client.model.ReactionAddedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static io.slack.api.client.EventDecorator.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,7 +34,7 @@ public class EventDecoratorUnitTest {
     public void shouldParseAppRateLimitedEvent() {
         // given
         AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
-        appRateLimitedEvent.setType("app_rate_limited");
+        appRateLimitedEvent.setType(APP_RATE_LIMITED_TYPE);
         // when
         this.eventDecorator = new EventDecorator(appRateLimitedEvent);
         this.eventDecorator.accept(eventVisitorMock);
@@ -57,7 +59,7 @@ public class EventDecoratorUnitTest {
         appMentionEvent.setType("app");
         EventCallback eventCallback = new EventCallback();
         eventCallback.setEvent(appMentionEvent);
-        eventCallback.setType("event_callback");
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventDecorator = new EventDecorator(eventCallback);
         this.eventDecorator.accept(eventVisitorMock);
@@ -70,11 +72,26 @@ public class EventDecoratorUnitTest {
         appMentionEvent.setType("app_mention");
         EventCallback eventCallback = new EventCallback();
         eventCallback.setEvent(appMentionEvent);
-        eventCallback.setType("event_callback");
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventDecorator = new EventDecorator(eventCallback);
         this.eventDecorator.accept(eventVisitorMock);
         // then
         verify(eventVisitorMock, times(1)).visit(any(AppMentionEvent.class));
+    }
+
+    @Test
+    public void shouldParseReactionAddedEvent() {
+        // given
+        ReactionAddedEvent reactionAddedEvent = new ReactionAddedEvent();
+        reactionAddedEvent.setType(REACTION_ADDED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(reactionAddedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ReactionAddedEvent.class));
     }
 }
