@@ -26,10 +26,10 @@ public class JSONUnitTest {
         //when: "parse the payload"
         EventPayload event = json.deserialize(payload, EventPayload.class);
         //then: "an event object should be created"
-        assertThat(event).isInstanceOf(AppRateLimited.class);
+        assertThat(event).isInstanceOf(AppRateLimitedEvent.class);
         assertThat(event.getToken()).isEqualTo("Jhj5dZrVaK7ZwHHjRyZWjbDl");
         assertThat(event.getTeamId()).isEqualTo("T123456");
-        assertThat(((AppRateLimited)event).getMinuteRateLimited()).isEqualTo(1518467820);
+        assertThat(((AppRateLimitedEvent)event).getMinuteRateLimited()).isEqualTo(1518467820);
         assertThat(event.getApiAppId()).isEqualTo("A123456");
     }
 
@@ -90,13 +90,13 @@ public class JSONUnitTest {
         //when: "parse the payload"
         EventCallback event = json.deserialize(payload, EventCallback.class);
         //then: "an event object should be created"
-        assertThat(event.getEvent()).isInstanceOf(ReactionAdded.class);
+        assertThat(event.getEvent()).isInstanceOf(ReactionAddedEvent.class);
         assertThat(event.getEvent().getUser()).isEqualTo("U061F1EUR");
-        assertThat(((ReactionAdded)event.getEvent()).getItem().getType()).isEqualTo("message");
-        assertThat(((ReactionAdded)event.getEvent()).getItem().getChannel()).isEqualTo("C061EG9SL");
-        assertThat(((ReactionAdded)event.getEvent()).getItem().getTs()).isEqualTo("1464196127.000002");
-        assertThat(((ReactionAdded)event.getEvent()).getReaction()).isEqualTo("slightly_smiling_face");
-        assertThat(((ReactionAdded)event.getEvent()).getItemUser()).isEqualTo("U0M4RL1NY");
+        assertThat(((ReactionAddedEvent)event.getEvent()).getItem().getType()).isEqualTo("message");
+        assertThat(((ReactionAddedEvent)event.getEvent()).getItem().getChannel()).isEqualTo("C061EG9SL");
+        assertThat(((ReactionAddedEvent)event.getEvent()).getItem().getTs()).isEqualTo("1464196127.000002");
+        assertThat(((ReactionAddedEvent)event.getEvent()).getReaction()).isEqualTo("slightly_smiling_face");
+        assertThat(((ReactionAddedEvent)event.getEvent()).getItemUser()).isEqualTo("U0M4RL1NY");
         assertThat(event.getEvent().getEventTs()).isEqualTo("1465244570.336841");
     }
 
@@ -129,11 +129,11 @@ public class JSONUnitTest {
 
         //then: "an event object should be created"
 
-        assertThat(event.getEvent()).isInstanceOf(AppMention.class);
+        assertThat(event.getEvent()).isInstanceOf(AppMentionEvent.class);
         assertThat(event.getEvent().getUser()).isEqualTo("U061F7AUR");
-        assertThat(((AppMention)event.getEvent()).getText()).isEqualTo("What ever happened to <@U0LAN0Z89>?");
+        assertThat(((AppMentionEvent)event.getEvent()).getText()).isEqualTo("What ever happened to <@U0LAN0Z89>?");
         assertThat(event.getEvent().getTs()).isEqualTo("1515449438.000011");
-        assertThat(((AppMention)event.getEvent()).getChannel()).isEqualTo("C0LAN2Q65");
+        assertThat(((AppMentionEvent)event.getEvent()).getChannel()).isEqualTo("C0LAN2Q65");
         assertThat(event.getEvent().getEventTs()).isEqualTo("1515449438000011");
     }
 }

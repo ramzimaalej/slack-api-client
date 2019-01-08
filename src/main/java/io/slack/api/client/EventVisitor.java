@@ -1,11 +1,11 @@
 package io.slack.api.client;
 
-import io.slack.api.client.model.AppMention;
-import io.slack.api.client.model.AppRateLimited;
-import io.slack.api.client.model.ReactionAdded;
+import io.slack.api.client.model.AppMentionEvent;
+import io.slack.api.client.model.AppRateLimitedEvent;
+import io.slack.api.client.model.ReactionAddedEvent;
 
 public interface EventVisitor {
-    void visit(AppRateLimited event);
-    void visit(AppMention event);
-    void visit(ReactionAdded event);
+    void visit(AppRateLimitedEvent event);
+    void visit(AppMentionEvent event);
+    void visit(ReactionAddedEvent event);
 }

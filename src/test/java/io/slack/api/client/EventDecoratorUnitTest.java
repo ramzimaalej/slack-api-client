@@ -1,6 +1,6 @@
 package io.slack.api.client;
 
-import io.slack.api.client.model.AppRateLimited;
+import io.slack.api.client.model.AppRateLimitedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,12 +28,12 @@ public class EventDecoratorUnitTest {
     @Test
     public void shouldParseAppRateLimitedEvent() {
         // given
-        AppRateLimited appRateLimited = new AppRateLimited();
-        appRateLimited.setType("app_rate_limited");
+        AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
+        appRateLimitedEvent.setType("app_rate_limited");
         // when
-        this.eventDecorator = new EventDecorator(appRateLimited);
+        this.eventDecorator = new EventDecorator(appRateLimitedEvent);
         this.eventDecorator.accept(eventVisitorMock);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(AppRateLimited.class));
+        verify(eventVisitorMock, times(1)).visit(any(AppRateLimitedEvent.class));
     }
 }

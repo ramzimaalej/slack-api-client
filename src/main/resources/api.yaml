@@ -91,7 +91,7 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          app_rate_limited: '#/components/schemas/AppRateLimited'
+          app_rate_limited: '#/components/schemas/AppRateLimitedEvent'
           event_callback: '#/components/schemas/EventCallback'
       required:
         - token
@@ -107,7 +107,7 @@ components:
           type: string
         type:
           type: string
-    AppRateLimited:
+    AppRateLimitedEvent:
       allOf:
         - $ref: '#/components/schemas/EventPayload'
         - type: object
@@ -144,8 +144,8 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          reaction_added: '#/components/schemas/ReactionAdded'
-          app_mention: '#/components/schemas/AppMention'
+          reaction_added: '#/components/schemas/ReactionAddedEvent'
+          app_mention: '#/components/schemas/AppMentionEvent'
       required:
         - type
         - event_ts
@@ -160,7 +160,7 @@ components:
           type: string
         type:
           type: string
-    AppMention:
+    AppMentionEvent:
       allOf:
         - $ref: '#/components/schemas/BaseEvent'
         - type: object
@@ -172,7 +172,7 @@ components:
               type: string
             channel:
               type: string
-    ReactionAdded:
+    ReactionAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseEvent'
         - type: object
@@ -186,8 +186,8 @@ components:
             item_user:
               type: string
             item:
-              $ref: '#/components/schemas/ReactionAddedItem'
-    ReactionAddedItem:
+              $ref: '#/components/schemas/ReactionAddedItemEvent'
+    ReactionAddedItemEvent:
       type: object
       properties:
         type:

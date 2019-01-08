@@ -1,7 +1,7 @@
 package io.slack.api.client;
 
 import io.slack.api.client.invoker.JSON;
-import io.slack.api.client.model.AppRateLimited;
+import io.slack.api.client.model.AppRateLimitedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,10 +36,10 @@ public class EventHandlerUnitTest {
                 "    \"minute_rate_limited\": 1518467820,\n" +
                 "    \"api_app_id\": \"A123456\"\n" +
                 "}";
-        doNothing().when(eventVisitorMock).visit(any(AppRateLimited.class));
+        doNothing().when(eventVisitorMock).visit(any(AppRateLimitedEvent.class));
         //when: parse the payload
         eventHandler.handleEvent(payload);
         //then: an event object should be created
-        verify(eventVisitorMock, times(1)).visit(any(AppRateLimited.class));
+        verify(eventVisitorMock, times(1)).visit(any(AppRateLimitedEvent.class));
     }
 }
