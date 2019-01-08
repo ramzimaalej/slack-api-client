@@ -18,9 +18,6 @@ public final class EventDecorator {
                 visitor.visit((AppRateLimited) event);
                 break;
             }
-            case "event_callback": {
-
-            }
             default:
                 throw new UnknownTypeException("Unknown type: " + event.getType());
         }
