@@ -61,7 +61,44 @@ public class JSONUnitTest {
     }
 
     @Test
-    public void shouldParseReadtionAddedEvent () {
+    public void shouldParseAppMentionEvent() {
+        // should parse app_mention event
+        // given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"ZZZZZZWSxiZZZ2yIvs3peJ\",\n" +
+                "    \"team_id\": \"T061EG9R6\",\n" +
+                "    \"api_app_id\": \"A0MDYCDME\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"app_mention\",\n" +
+                "        \"user\": \"U061F7AUR\",\n" +
+                "        \"text\": \"What ever happened to <@U0LAN0Z89>?\",\n" +
+                "        \"ts\": \"1515449438.000011\",\n" +
+                "        \"channel\": \"C0LAN2Q65\",\n" +
+                "        \"event_ts\": \"1515449438000011\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"Ev0MDYGDKJ\",\n" +
+                "    \"event_time\": 1515449438000011,\n" +
+                "    \"authed_users\": [\n" +
+                "        \"U0LAN0Z89\"\n" +
+                "    ]\n" +
+                "}";
+        //when: "parse the payload"
+
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+
+        //then: "an event object should be created"
+
+        assertThat(event.getEvent()).isInstanceOf(AppMentionEvent.class);
+        assertThat(event.getEvent().getUser()).isEqualTo("U061F7AUR");
+        assertThat(((AppMentionEvent)event.getEvent()).getText()).isEqualTo("What ever happened to <@U0LAN0Z89>?");
+        assertThat(event.getEvent().getTs()).isEqualTo("1515449438.000011");
+        assertThat(((AppMentionEvent)event.getEvent()).getChannel()).isEqualTo("C0LAN2Q65");
+        assertThat(event.getEvent().getEventTs()).isEqualTo("1515449438000011");
+    }
+
+    @Test
+    public void shouldParseReactionAddedEvent () {
         // should parse reaction_added event
         //given: "receive the following payload"
         String payload = "{\n" +
@@ -98,42 +135,5 @@ public class JSONUnitTest {
         assertThat(((ReactionAddedEvent)event.getEvent()).getReaction()).isEqualTo("slightly_smiling_face");
         assertThat(((ReactionAddedEvent)event.getEvent()).getItemUser()).isEqualTo("U0M4RL1NY");
         assertThat(event.getEvent().getEventTs()).isEqualTo("1465244570.336841");
-    }
-
-    @Test
-    public void shouldParseAppMentionEvent() {
-        // should parse app_mention event
-        // given: "receive the following payload"
-        String payload = "{\n" +
-                "    \"token\": \"ZZZZZZWSxiZZZ2yIvs3peJ\",\n" +
-                "    \"team_id\": \"T061EG9R6\",\n" +
-                "    \"api_app_id\": \"A0MDYCDME\",\n" +
-                "    \"event\": {\n" +
-                "        \"type\": \"app_mention\",\n" +
-                "        \"user\": \"U061F7AUR\",\n" +
-                "        \"text\": \"What ever happened to <@U0LAN0Z89>?\",\n" +
-                "        \"ts\": \"1515449438.000011\",\n" +
-                "        \"channel\": \"C0LAN2Q65\",\n" +
-                "        \"event_ts\": \"1515449438000011\"\n" +
-                "    },\n" +
-                "    \"type\": \"event_callback\",\n" +
-                "    \"event_id\": \"Ev0MDYGDKJ\",\n" +
-                "    \"event_time\": 1515449438000011,\n" +
-                "    \"authed_users\": [\n" +
-                "        \"U0LAN0Z89\"\n" +
-                "    ]\n" +
-                "}";
-        //when: "parse the payload"
-
-        EventCallback event = json.deserialize(payload, EventCallback.class);
-
-        //then: "an event object should be created"
-
-        assertThat(event.getEvent()).isInstanceOf(AppMentionEvent.class);
-        assertThat(event.getEvent().getUser()).isEqualTo("U061F7AUR");
-        assertThat(((AppMentionEvent)event.getEvent()).getText()).isEqualTo("What ever happened to <@U0LAN0Z89>?");
-        assertThat(event.getEvent().getTs()).isEqualTo("1515449438.000011");
-        assertThat(((AppMentionEvent)event.getEvent()).getChannel()).isEqualTo("C0LAN2Q65");
-        assertThat(event.getEvent().getEventTs()).isEqualTo("1515449438000011");
     }
 }
