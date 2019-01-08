@@ -146,6 +146,7 @@ components:
         mapping:
           reaction_added: '#/components/schemas/ReactionAddedEvent'
           app_mention: '#/components/schemas/AppMentionEvent'
+          app_uninstalled: '#/components/schemas/AppUninstalledEvent'
       required:
         - type
         - event_ts
@@ -196,3 +197,7 @@ components:
           type: string
         ts:
           type: string
+    AppUninstalledEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object

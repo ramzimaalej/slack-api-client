@@ -9,6 +9,7 @@ public final class EventDecorator {
     public static final String EVENT_CALLBACK_TYPE = "event_callback";
     public static final String APP_MENTION_TYPE = "app_mention";
     public static final String REACTION_ADDED_TYPE = "reaction_added";
+    public static final String APP_UNINSTALLED_TYPE = "app_uninstalled";
 
     private EventPayload event;
 
@@ -31,6 +32,10 @@ public final class EventDecorator {
                     }
                     case REACTION_ADDED_TYPE: {
                         visitor.visit((ReactionAddedEvent) subEvent);
+                        break;
+                    }
+                    case APP_UNINSTALLED_TYPE: {
+                        visitor.visit((AppUninstalledEvent) subEvent);
                         break;
                     }
                     default:

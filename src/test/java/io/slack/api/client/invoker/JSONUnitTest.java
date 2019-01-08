@@ -136,4 +136,25 @@ public class JSONUnitTest {
         assertThat(((ReactionAddedEvent)event.getEvent()).getItemUser()).isEqualTo("U0M4RL1NY");
         assertThat(event.getEvent().getEventTs()).isEqualTo("1465244570.336841");
     }
+
+    @Test
+    public void shouldParseAppUninstalledEvent() {
+        // should parse app_uninstalled event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"app_uninstalled\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(AppUninstalledEvent.class);
+    }
 }

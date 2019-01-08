@@ -1,10 +1,7 @@
 package io.slack.api.client;
 
 import io.slack.api.client.exception.UnknownTypeException;
-import io.slack.api.client.model.AppMentionEvent;
-import io.slack.api.client.model.AppRateLimitedEvent;
-import io.slack.api.client.model.EventCallback;
-import io.slack.api.client.model.ReactionAddedEvent;
+import io.slack.api.client.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -93,5 +90,20 @@ public class EventDecoratorUnitTest {
         this.eventDecorator.accept(eventVisitorMock);
         // then
         verify(eventVisitorMock, times(1)).visit(any(ReactionAddedEvent.class));
+    }
+
+    @Test
+    public void shouldParseAppUninstalledEvent() {
+        // given
+        AppUninstalledEvent appUninstalledEvent = new AppUninstalledEvent();
+        appUninstalledEvent.setType(APP_UNINSTALLED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(appUninstalledEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(AppUninstalledEvent.class));
     }
 }
