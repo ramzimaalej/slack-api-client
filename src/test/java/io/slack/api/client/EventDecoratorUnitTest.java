@@ -121,4 +121,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelArchiveEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelCreatedEvent() {
+        // given
+        ChannelCreatedEvent channelCreatedEvent = new ChannelCreatedEvent();
+        channelCreatedEvent.setType(CHANNEL_CREATED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelCreatedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelCreatedEvent.class));
+    }
 }

@@ -181,6 +181,40 @@ public class JSONUnitTest {
         assertThat(event.getEvent()).isInstanceOf(ChannelArchiveEvent.class);
         assertThat(((ChannelArchiveEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
         assertThat(event.getEvent().getUser()).isEqualTo("U024BE7LH");
+    }
 
+    @Test
+    public void shouldParseChannelCreatedEvent() {
+        // should parse channel_created event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_created\",\n" +
+                "        \"channel\": {\n" +
+                "            \"id\": \"C024BE91L\",\n" +
+                "            \"name\": \"fun\",\n" +
+                "            \"created\": 1360782804,\n" +
+                "            \"creator\": \"U024BE7LH\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"authed_users\": [\n" +
+                "    \"UXXXXXXX1\",\n" +
+                "    \"UXXXXXXX2\"\n" +
+                "    ],\n" +
+                "    \"event_id\": \"Ev08MFMKH6\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelCreatedEvent.class);
+        assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getId()).isEqualTo("C024BE91L");
+        assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getName()).isEqualTo("fun");
+        assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getCreated()).isEqualTo(1360782804L);
+        assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getCreator()).isEqualTo("U024BE7LH");
     }
 }

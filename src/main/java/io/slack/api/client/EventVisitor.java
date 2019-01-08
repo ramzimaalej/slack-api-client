@@ -8,4 +8,5 @@ public interface EventVisitor {
     void visit(ReactionAddedEvent event);
     void visit(AppUninstalledEvent event);
     void visit(ChannelArchiveEvent subEvent);
+    void visit(ChannelCreatedEvent subEvent);
 }

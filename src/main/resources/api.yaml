@@ -148,6 +148,7 @@ components:
           app_mention: '#/components/schemas/AppMentionEvent'
           app_uninstalled: '#/components/schemas/AppUninstalledEvent'
           channel_archive: '#/components/schemas/ChannelArchiveEvent'
+          channel_created: '#/components/schemas/ChannelCreatedEvent'
       required:
         - type
         - event_ts
@@ -211,3 +212,29 @@ components:
           properties:
             channel:
               type: string
+    ChannelCreatedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - channel
+          properties:
+            channel:
+              $ref: '#/components/schemas/ChannelCreatedItem'
+    ChannelCreatedItem:
+      type: object
+      required:
+        - id
+        - name
+        - created
+        - creator
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created:
+          type: integer
+          format: int64
+        creator:
+          type: string
