@@ -189,8 +189,8 @@ components:
             item_user:
               type: string
             item:
-              $ref: '#/components/schemas/ReactionAddedItemEvent'
-    ReactionAddedItemEvent:
+              $ref: '#/components/schemas/ReactionAddedItem'
+    ReactionAddedItem:
       type: object
       properties:
         type:
