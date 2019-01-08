@@ -217,4 +217,27 @@ public class JSONUnitTest {
         assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getCreated()).isEqualTo(1360782804L);
         assertThat(((ChannelCreatedEvent)event.getEvent()).getChannel().getCreator()).isEqualTo("U024BE7LH");
     }
+
+    @Test
+    public void shouldParseChannelDeletedEvent() {
+        // should parse channel_deleted event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_deleted\",\n" +
+                "        \"channel\": \"C024BE91L\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelDeletedEvent.class);
+        assertThat(((ChannelDeletedEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
+    }
 }

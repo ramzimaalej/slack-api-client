@@ -136,4 +136,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelCreatedEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelDeletedEvent() {
+        // given
+        ChannelDeletedEvent channelDeletedEvent = new ChannelDeletedEvent();
+        channelDeletedEvent.setType(CHANNEL_DELETED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelDeletedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelDeletedEvent.class));
+    }
 }

@@ -12,6 +12,7 @@ public final class EventDecorator {
     public static final String APP_UNINSTALLED_TYPE = "app_uninstalled";
     public static final String CHANNEL_ARCHIVE_TYPE = "channel_archive";
     public static final String CHANNEL_CREATED_TYPE = "channel_created";
+    public static final String CHANNEL_DELETED_TYPE = "channel_deleted";
 
     private EventPayload event;
 
@@ -46,6 +47,10 @@ public final class EventDecorator {
                     }
                     case CHANNEL_CREATED_TYPE: {
                         visitor.visit((ChannelCreatedEvent) subEvent);
+                        break;
+                    }
+                    case CHANNEL_DELETED_TYPE: {
+                        visitor.visit((ChannelDeletedEvent) subEvent);
                         break;
                     }
                     default:

@@ -149,6 +149,7 @@ components:
           app_uninstalled: '#/components/schemas/AppUninstalledEvent'
           channel_archive: '#/components/schemas/ChannelArchiveEvent'
           channel_created: '#/components/schemas/ChannelCreatedEvent'
+          channel_deleted: '#/components/schemas/ChannelDeletedEvent'
       required:
         - type
         - event_ts
@@ -238,3 +239,12 @@ components:
           format: int64
         creator:
           type: string
+    ChannelDeletedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - channel
+          properties:
+            channel:
+              type: string
