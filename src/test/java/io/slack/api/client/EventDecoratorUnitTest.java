@@ -1,5 +1,6 @@
 package io.slack.api.client;
 
+import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.AppMentionEvent;
 import io.slack.api.client.model.AppRateLimitedEvent;
 import io.slack.api.client.model.EventCallback;
@@ -37,6 +38,16 @@ public class EventDecoratorUnitTest {
         this.eventDecorator.accept(eventVisitorMock);
         // then
         verify(eventVisitorMock, times(1)).visit(any(AppRateLimitedEvent.class));
+    }
+
+    @Test(expected = UnknownTypeException.class)
+    public void shouldThrowAnExceptionWhenUnknowType() {
+        // given
+        AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
+        appRateLimitedEvent.setType("app_rate");
+        // when
+        this.eventDecorator = new EventDecorator(appRateLimitedEvent);
+        this.eventDecorator.accept(eventVisitorMock);
     }
 
     @Test
