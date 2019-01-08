@@ -50,6 +50,19 @@ public class EventDecoratorUnitTest {
         this.eventDecorator.accept(eventVisitorMock);
     }
 
+    @Test(expected = UnknownTypeException.class)
+    public void shouldThrowAnExceptionWhenUnknowTypeForSubEvent() {
+        // given
+        AppMentionEvent appMentionEvent = new AppMentionEvent();
+        appMentionEvent.setType("app");
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(appMentionEvent);
+        eventCallback.setType("event_callback");
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+    }
+
     @Test
     public void shouldParseAppMentionEvent() {
         // given
