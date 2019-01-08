@@ -147,6 +147,7 @@ components:
           reaction_added: '#/components/schemas/ReactionAddedEvent'
           app_mention: '#/components/schemas/AppMentionEvent'
           app_uninstalled: '#/components/schemas/AppUninstalledEvent'
+          channel_archive: '#/components/schemas/ChannelArchiveEvent'
       required:
         - type
         - event_ts
@@ -201,3 +202,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseEvent'
         - type: object
+    ChannelArchiveEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - channel
+          properties:
+            channel:
+              type: string

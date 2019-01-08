@@ -157,4 +157,30 @@ public class JSONUnitTest {
         //then: "an event object should be created"
         assertThat(event.getEvent()).isInstanceOf(AppUninstalledEvent.class);
     }
+
+    @Test
+    public void shouldParseChannelArchivedEvent() {
+        // should parse channel_archive event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_archive\",\n" +
+                "        \"channel\": \"C024BE91L\",\n" +
+                "        \"user\": \"U024BE7LH\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelArchiveEvent.class);
+        assertThat(((ChannelArchiveEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
+        assertThat(event.getEvent().getUser()).isEqualTo("U024BE7LH");
+
+    }
 }

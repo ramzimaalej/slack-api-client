@@ -10,6 +10,7 @@ public final class EventDecorator {
     public static final String APP_MENTION_TYPE = "app_mention";
     public static final String REACTION_ADDED_TYPE = "reaction_added";
     public static final String APP_UNINSTALLED_TYPE = "app_uninstalled";
+    public static final String CHANNEL_ARCHIVE_TYPE = "channel_archive";
 
     private EventPayload event;
 
@@ -36,6 +37,10 @@ public final class EventDecorator {
                     }
                     case APP_UNINSTALLED_TYPE: {
                         visitor.visit((AppUninstalledEvent) subEvent);
+                        break;
+                    }
+                    case CHANNEL_ARCHIVE_TYPE: {
+                        visitor.visit((ChannelArchiveEvent) subEvent);
                         break;
                     }
                     default:

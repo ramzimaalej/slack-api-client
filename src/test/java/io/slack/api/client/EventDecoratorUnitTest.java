@@ -106,4 +106,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(AppUninstalledEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelArchivedEvent() {
+        // given
+        ChannelArchiveEvent channelArchiveEvent = new ChannelArchiveEvent();
+        channelArchiveEvent.setType(CHANNEL_ARCHIVE_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelArchiveEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelArchiveEvent.class));
+    }
 }
