@@ -1,8 +1,7 @@
 package io.slack.api.client;
 
 import io.slack.api.client.exception.UnknownTypeException;
-import io.slack.api.client.model.AppRateLimitedEvent;
-import io.slack.api.client.model.EventPayload;
+import io.slack.api.client.model.*;
 
 public final class EventDecorator {
 
@@ -16,6 +15,18 @@ public final class EventDecorator {
         switch (event.getType()) {
             case "app_rate_limited": {
                 visitor.visit((AppRateLimitedEvent) event);
+                break;
+            }
+            case "event_callback": {
+                BaseEvent subEvent = ((EventCallback)event).getEvent();
+                switch (subEvent.getType()) {
+                    case "app_mention": {
+                        visitor.visit((AppMentionEvent) subEvent);
+                        break;
+                    }
+                    default:
+                        throw new UnknownTypeException("Unknown type: " + event.getType());
+                }
                 break;
             }
             default:
