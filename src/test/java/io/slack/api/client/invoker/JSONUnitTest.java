@@ -322,7 +322,7 @@ public class JSONUnitTest {
 
     @Test
     public void shouldParseChannelUnarchiveEvent() {
-        // should parse channel_left event
+        // should parse channel_unarchive event
         //given: "receive the following payload"
         String payload = "{\n" +
                 "    \"token\": \"XXYYZZ\",\n" +
@@ -343,5 +343,40 @@ public class JSONUnitTest {
         assertThat(event.getEvent()).isInstanceOf(ChannelUnarchiveEvent.class);
         assertThat(((ChannelUnarchiveEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
         assertThat(event.getEvent().getUser()).isEqualTo("U024BE7LH");
+    }
+
+    @Test
+    public void shouldParseDndUpdatedEvent() {
+        // should parse dnd_updated event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"dnd_updated\",\n" +
+                "        \"user\": \"U1234\",\n" +
+                "        \"dnd_status\": {\n" +
+                "            \"dnd_enabled\": true,\n" +
+                "            \"next_dnd_start_ts\": 1450387800,\n" +
+                "            \"next_dnd_end_ts\": 1450423800,\n" +
+                "            \"snooze_enabled\": true,\n" +
+                "            \"snooze_endtime\": 1450373897\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(DndUpdatedEvent.class);
+        assertThat(event.getEvent().getUser()).isEqualTo("U1234");
+        assertThat(((DndUpdatedEvent)event.getEvent()).getDndStatus().getDndEnabled()).isEqualTo(true);
+        assertThat(((DndUpdatedEvent)event.getEvent()).getDndStatus().getNextDndStartTs()).isEqualTo(1450387800L);
+        assertThat(((DndUpdatedEvent)event.getEvent()).getDndStatus().getNextDndEndTs()).isEqualTo(1450423800L);
+        assertThat(((DndUpdatedEvent)event.getEvent()).getDndStatus().getSnoozeEnabled()).isEqualTo(true);
+        assertThat(((DndUpdatedEvent)event.getEvent()).getDndStatus().getSnoozeEndtime()).isEqualTo(1450373897L);
     }
 }
