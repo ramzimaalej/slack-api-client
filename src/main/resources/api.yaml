@@ -156,6 +156,7 @@ components:
           channel_unarchive: '#/components/schemas/ChannelUnarchiveEvent'
           dnd_updated: '#/components/schemas/DndUpdatedEvent'
           dnd_updated_user: '#/components/schemas/DndUpdatedUserEvent'
+          email_domain_changed: '#/components/schemas/EmailDomainChangedEvent'
       required:
         - type
         - event_ts
@@ -359,3 +360,12 @@ components:
         next_dnd_end_ts:
           type: integer
           format: int64
+    EmailDomainChangedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - email_domain
+          properties:
+            email_domain:
+              type: string
