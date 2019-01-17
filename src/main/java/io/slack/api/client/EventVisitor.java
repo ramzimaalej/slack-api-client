@@ -14,4 +14,5 @@ public interface EventVisitor {
     void visit(ChannelLeftEvent event);
     void visit(ChannelRenameEvent event);
     void visit(ChannelUnarchiveEvent event);
+    void visit(DndUpdatedEvent event);
 }

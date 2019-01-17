@@ -211,4 +211,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelUnarchiveEvent.class));
     }
+
+    @Test
+    public void shouldParseDndUpdatedEvent() {
+        // given
+        DndUpdatedEvent dndUpdatedEvent = new DndUpdatedEvent();
+        dndUpdatedEvent.setType(DND_UPDATED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(dndUpdatedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(DndUpdatedEvent.class));
+    }
 }
