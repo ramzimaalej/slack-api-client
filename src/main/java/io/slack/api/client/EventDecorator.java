@@ -18,6 +18,7 @@ public final class EventDecorator {
     public static final String CHANNEL_RENAME_TYPE = "channel_rename";
     public static final String CHANNEL_UNARCHIVE_TYPE = "channel_unarchive";
     public static final String DND_UPDATED_TYPE = "dnd_updated";
+    public static final String DND_UPDATED_USER_TYPE = "dnd_updated_user";
 
     private EventPayload event;
 
@@ -76,6 +77,10 @@ public final class EventDecorator {
                     }
                     case DND_UPDATED_TYPE: {
                         visitor.visit((DndUpdatedEvent) subEvent);
+                        break;
+                    }
+                    case DND_UPDATED_USER_TYPE: {
+                        visitor.visit((DndUpdatedUserEvent) subEvent);
                         break;
                     }
                     default:

@@ -226,4 +226,20 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(DndUpdatedEvent.class));
     }
+
+    @Test
+    public void shouldParseDndUpdatedUserEvent() {
+        // given
+        DndUpdatedUserEvent dndUpdatedUserEvent = new DndUpdatedUserEvent();
+        dndUpdatedUserEvent.setType(DND_UPDATED_USER_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(dndUpdatedUserEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(DndUpdatedUserEvent.class));
+    }
+
 }
