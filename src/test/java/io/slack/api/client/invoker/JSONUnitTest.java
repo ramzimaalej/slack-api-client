@@ -240,4 +240,31 @@ public class JSONUnitTest {
         assertThat(event.getEvent()).isInstanceOf(ChannelDeletedEvent.class);
         assertThat(((ChannelDeletedEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
     }
+
+    @Test
+    public void shouldParseChannelHistoryChangedEvent() {
+        // should parse channel_history_changed event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_history_changed\",\n" +
+                "        \"latest\": \"1358877455.000010\",\n" +
+                "        \"ts\": \"1361482916.000003\",\n" +
+                "        \"event_ts\": \"1361482916.000004\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelHistoryChangedEvent.class);
+        assertThat(((ChannelHistoryChangedEvent)event.getEvent()).getLatest()).isEqualTo("1358877455.000010");
+        assertThat(event.getEvent().getTs()).isEqualTo("1361482916.000003");
+        assertThat(event.getEvent().getEventTs()).isEqualTo("1361482916.000004");
+    }
 }

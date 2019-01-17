@@ -150,6 +150,7 @@ components:
           channel_archive: '#/components/schemas/ChannelArchiveEvent'
           channel_created: '#/components/schemas/ChannelCreatedEvent'
           channel_deleted: '#/components/schemas/ChannelDeletedEvent'
+          channel_history_changed: '#/components/schemas/ChannelHistoryChangedEvent'
       required:
         - type
         - event_ts
@@ -247,4 +248,13 @@ components:
             - channel
           properties:
             channel:
+              type: string
+    ChannelHistoryChangedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - latest
+          properties:
+            latest:
               type: string
