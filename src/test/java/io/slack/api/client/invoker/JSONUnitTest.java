@@ -319,4 +319,29 @@ public class JSONUnitTest {
         assertThat(((ChannelRenameEvent)event.getEvent()).getChannel().getName()).isEqualTo("fun");
         assertThat(((ChannelRenameEvent)event.getEvent()).getChannel().getCreated()).isEqualTo(1360782804L);
     }
+
+    @Test
+    public void shouldParseChannelUnarchiveEvent() {
+        // should parse channel_left event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_unarchive\",\n" +
+                "        \"channel\": \"C024BE91L\",\n" +
+                "        \"user\": \"U024BE7LH\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelUnarchiveEvent.class);
+        assertThat(((ChannelUnarchiveEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
+        assertThat(event.getEvent().getUser()).isEqualTo("U024BE7LH");
+    }
 }

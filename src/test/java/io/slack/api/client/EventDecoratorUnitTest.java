@@ -196,4 +196,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelRenameEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelUnarchiveEvent() {
+        // given
+        ChannelUnarchiveEvent channelUnarchiveEvent = new ChannelUnarchiveEvent();
+        channelUnarchiveEvent.setType(CHANNEL_UNARCHIVE_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelUnarchiveEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelUnarchiveEvent.class));
+    }
 }

@@ -153,6 +153,7 @@ components:
           channel_history_changed: '#/components/schemas/ChannelHistoryChangedEvent'
           channel_left: '#/components/schemas/ChannelLeftEvent'
           channel_rename: '#/components/schemas/ChannelRenameEvent'
+          channel_unarchive: '#/components/schemas/ChannelUnarchiveEvent'
       required:
         - type
         - event_ts
@@ -292,3 +293,12 @@ components:
         created:
           type: integer
           format: int64
+    ChannelUnarchiveEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - channel
+          properties:
+            channel:
+              type: string
