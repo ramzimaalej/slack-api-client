@@ -267,4 +267,27 @@ public class JSONUnitTest {
         assertThat(event.getEvent().getTs()).isEqualTo("1361482916.000003");
         assertThat(event.getEvent().getEventTs()).isEqualTo("1361482916.000004");
     }
+
+    @Test
+    public void shouldParseChannelLeftEvent() {
+        // should parse channel_left event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_left\",\n" +
+                "        \"channel\": \"C024BE91L\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelLeftEvent.class);
+        assertThat(((ChannelLeftEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
+    }
 }

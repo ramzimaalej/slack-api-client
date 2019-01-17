@@ -14,6 +14,7 @@ public final class EventDecorator {
     public static final String CHANNEL_CREATED_TYPE = "channel_created";
     public static final String CHANNEL_DELETED_TYPE = "channel_deleted";
     public static final String CHANNEL_HISTORY_CHANGED_TYPE = "channel_history_changed";
+    public static final String CHANNEL_LEFT_TYPE = "channel_left";
 
     private EventPayload event;
 
@@ -56,6 +57,10 @@ public final class EventDecorator {
                     }
                     case CHANNEL_HISTORY_CHANGED_TYPE: {
                         visitor.visit((ChannelHistoryChangedEvent) subEvent);
+                        break;
+                    }
+                    case CHANNEL_LEFT_TYPE: {
+                        visitor.visit((ChannelLeftEvent) subEvent);
                         break;
                     }
                     default:

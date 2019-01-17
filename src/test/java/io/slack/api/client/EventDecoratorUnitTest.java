@@ -166,4 +166,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelHistoryChangedEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelLeftEvent() {
+        // given
+        ChannelLeftEvent channelLeftEvent = new ChannelLeftEvent();
+        channelLeftEvent.setType(CHANNEL_LEFT_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelLeftEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelLeftEvent.class));
+    }
 }
