@@ -16,4 +16,5 @@ public interface EventVisitor {
     void visit(ChannelUnarchiveEvent event);
     void visit(DndUpdatedEvent event);
     void visit(DndUpdatedUserEvent event);
+    void visit(EmailDomainChangedEvent event);
 }

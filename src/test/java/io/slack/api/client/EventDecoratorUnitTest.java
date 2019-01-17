@@ -242,4 +242,18 @@ public class EventDecoratorUnitTest {
         verify(eventVisitorMock, times(1)).visit(any(DndUpdatedUserEvent.class));
     }
 
+    @Test
+    public void shouldParseEmailDomainChangedEvent() {
+        // given
+        EmailDomainChangedEvent emailDomainChangedEvent = new EmailDomainChangedEvent();
+        emailDomainChangedEvent.setType(EMAIL_DOMAIN_CHANGED_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(emailDomainChangedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(EmailDomainChangedEvent.class));
+    }
 }
