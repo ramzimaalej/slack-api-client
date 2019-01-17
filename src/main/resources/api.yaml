@@ -155,6 +155,7 @@ components:
           channel_rename: '#/components/schemas/ChannelRenameEvent'
           channel_unarchive: '#/components/schemas/ChannelUnarchiveEvent'
           dnd_updated: '#/components/schemas/DndUpdatedEvent'
+          dnd_updated_user: '#/components/schemas/DndUpdatedUserEvent'
       required:
         - type
         - event_ts
@@ -332,5 +333,29 @@ components:
         snooze_enabled:
           type: boolean
         snooze_endtime:
+          type: integer
+          format: int64
+    DndUpdatedUserEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - dnd_status
+          properties:
+            dnd_status:
+              $ref: '#/components/schemas/DndUpdatedUserItem'
+    DndUpdatedUserItem:
+      type: object
+      required:
+        - dnd_enabled
+        - next_dnd_start_ts
+        - next_dnd_end_ts
+      properties:
+        dnd_enabled:
+          type: boolean
+        next_dnd_start_ts:
+          type: integer
+          format: int64
+        next_dnd_end_ts:
           type: integer
           format: int64
