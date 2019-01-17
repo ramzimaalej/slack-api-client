@@ -152,6 +152,7 @@ components:
           channel_deleted: '#/components/schemas/ChannelDeletedEvent'
           channel_history_changed: '#/components/schemas/ChannelHistoryChangedEvent'
           channel_left: '#/components/schemas/ChannelLeftEvent'
+          channel_rename: '#/components/schemas/ChannelRenameEvent'
       required:
         - type
         - event_ts
@@ -268,3 +269,26 @@ components:
           properties:
             channel:
               type: string
+    ChannelRenameEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - channel
+          properties:
+            channel:
+              $ref: '#/components/schemas/ChannelRenamedItem'
+    ChannelRenamedItem:
+      type: object
+      required:
+        - id
+        - name
+        - created
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created:
+          type: integer
+          format: int64

@@ -181,4 +181,19 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(ChannelLeftEvent.class));
     }
+
+    @Test
+    public void shouldParseChannelRenameEvent() {
+        // given
+        ChannelRenameEvent channelRenameEvent = new ChannelRenameEvent();
+        channelRenameEvent.setType(CHANNEL_RENAME_TYPE);
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(channelRenameEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(ChannelRenameEvent.class));
+    }
 }

@@ -12,4 +12,5 @@ public interface EventVisitor {
     void visit(ChannelDeletedEvent event);
     void visit(ChannelHistoryChangedEvent event);
     void visit(ChannelLeftEvent event);
+    void visit(ChannelRenameEvent event);
 }

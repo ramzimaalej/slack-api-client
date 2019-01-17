@@ -290,4 +290,33 @@ public class JSONUnitTest {
         assertThat(event.getEvent()).isInstanceOf(ChannelLeftEvent.class);
         assertThat(((ChannelLeftEvent)event.getEvent()).getChannel()).isEqualTo("C024BE91L");
     }
+
+    @Test
+    public void shouldParseChannelRenameEvent() {
+        // should parse channel_rename event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"channel_rename\",\n" +
+                "        \"channel\": {\n" +
+                "            \"id\": \"C024BE91L\",\n" +
+                "            \"name\": \"fun\",\n" +
+                "            \"created\": 1360782804\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(ChannelRenameEvent.class);
+        assertThat(((ChannelRenameEvent)event.getEvent()).getChannel().getId()).isEqualTo("C024BE91L");
+        assertThat(((ChannelRenameEvent)event.getEvent()).getChannel().getName()).isEqualTo("fun");
+        assertThat(((ChannelRenameEvent)event.getEvent()).getChannel().getCreated()).isEqualTo(1360782804L);
+    }
 }
