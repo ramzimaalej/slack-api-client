@@ -20,6 +20,9 @@ public final class EventDecorator {
     public static final String DND_UPDATED_TYPE = "dnd_updated";
     public static final String DND_UPDATED_USER_TYPE = "dnd_updated_user";
     public static final String EMAIL_DOMAIN_CHANGED_TYPE = "email_domain_changed";
+    public static final String EMOJI_CHANGED_TYPE = "emoji_changed";
+    public static final String EMOJI_CHANGED_ADD_TYPE = "add";
+    public static final String EMOJI_CHANGED_REMOVE_TYPE = "remove";
 
     private EventPayload event;
 
@@ -86,6 +89,21 @@ public final class EventDecorator {
                     }
                     case EMAIL_DOMAIN_CHANGED_TYPE: {
                         visitor.visit((EmailDomainChangedEvent) subEvent);
+                        break;
+                    }
+                    case EMOJI_CHANGED_TYPE: {
+                        switch (((EmojiChangedEvent) subEvent).getSubtype()) {
+                            case EMOJI_CHANGED_ADD_TYPE: {
+                                visitor.visit(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
+                                break;
+                            }
+                            case EMOJI_CHANGED_REMOVE_TYPE: {
+                                visitor.visit(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
+                                break;
+                            }
+                            default:
+                                throw new UnknownTypeException("Unknown type: " + event.getType());
+                        }
                         break;
                     }
                     default:

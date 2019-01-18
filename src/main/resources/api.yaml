@@ -157,6 +157,7 @@ components:
           dnd_updated: '#/components/schemas/DndUpdatedEvent'
           dnd_updated_user: '#/components/schemas/DndUpdatedUserEvent'
           email_domain_changed: '#/components/schemas/EmailDomainChangedEvent'
+          emoji_changed: '#/components/schemas/EmojiChangedEvent'
       required:
         - type
         - event_ts
@@ -368,4 +369,21 @@ components:
             - email_domain
           properties:
             email_domain:
+              type: string
+    EmojiChangedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          required:
+            - subtype
+          properties:
+            subtype:
+              type: string
+            names:
+              type: array
+            items:
+              type: string
+            name:
+              type: string
+            value:
               type: string

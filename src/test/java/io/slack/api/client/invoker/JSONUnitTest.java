@@ -433,4 +433,57 @@ public class JSONUnitTest {
         assertThat(event.getEvent()).isInstanceOf(EmailDomainChangedEvent.class);
         assertThat(((EmailDomainChangedEvent)event.getEvent()).getEmailDomain()).isEqualTo("example.com");
     }
+
+    @Test
+    public void shouldParseEmojiRemovedEvent() {
+        // should parse emoji_changed event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"emoji_changed\",\n" +
+                "        \"subtype\": \"remove\",\n" +
+                "        \"names\": [\"remove\"],\n" +
+                "        \"event_ts\": \"1361482916.000004\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(EmojiChangedEvent.class);
+        assertThat(((EmojiChangedEvent)event.getEvent()).getNames().size()).isEqualTo(1);
+        assertThat(((EmojiChangedEvent)event.getEvent()).getNames().get(0)).isEqualTo("remove");
+    }
+
+    @Test
+    public void shouldParseEmojiAddedEvent() {
+        // should parse emoji_changed event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\": {\n" +
+                "        \"type\": \"emoji_changed\",\n" +
+                "        \"subtype\": \"add\",\n" +
+                "        \"name\": \"picard_facepalm\",\n" +
+                "        \"value\": \"https://my.slack.com/emoji/picard_facepalm/db8e287430eaa459.gif\",\n" +
+                "        \"event_ts\": \"1361482916.000004\"\n" +
+                "    },\n" +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(EmojiChangedEvent.class);
+        assertThat(((EmojiChangedEvent)event.getEvent()).getName()).isEqualTo("picard_facepalm");
+        assertThat(((EmojiChangedEvent)event.getEvent()).getValue()).isEqualTo("https://my.slack.com/emoji/picard_facepalm/db8e287430eaa459.gif");
+    }
 }

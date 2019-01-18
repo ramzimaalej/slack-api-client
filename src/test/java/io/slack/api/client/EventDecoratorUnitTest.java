@@ -256,4 +256,38 @@ public class EventDecoratorUnitTest {
         // then
         verify(eventVisitorMock, times(1)).visit(any(EmailDomainChangedEvent.class));
     }
+
+    @Test
+    public void shouldParseEmojiAddedEvent() {
+        // given
+        EmojiChangedEvent emojiChangedEvent = new EmojiChangedEvent();
+        emojiChangedEvent.setSubtype("add");
+        emojiChangedEvent.setType(EMOJI_CHANGED_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(emojiChangedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(EmojiAddedEvent.class));
+    }
+
+    @Test
+    public void shouldParseEmojiRemovedEvent() {
+        // given
+        EmojiChangedEvent emojiChangedEvent = new EmojiChangedEvent();
+        emojiChangedEvent.setSubtype("remove");
+        emojiChangedEvent.setType(EMOJI_CHANGED_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(emojiChangedEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventDecorator = new EventDecorator(eventCallback);
+        this.eventDecorator.accept(eventVisitorMock);
+        // then
+        verify(eventVisitorMock, times(1)).visit(any(EmojiRemovedEvent.class));
+    }
 }

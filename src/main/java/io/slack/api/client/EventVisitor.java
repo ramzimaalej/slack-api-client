@@ -17,4 +17,6 @@ public interface EventVisitor {
     void visit(DndUpdatedEvent event);
     void visit(DndUpdatedUserEvent event);
     void visit(EmailDomainChangedEvent event);
+    void visit(EmojiRemovedEvent event);
+    void visit(EmojiAddedEvent event);
 }
