@@ -1,5 +1,7 @@
-package io.slack.api.client;
+package io.slack.api.client.handler;
 
+import io.slack.api.client.handler.EventHandler;
+import io.slack.api.client.handler.EventVisitor;
 import io.slack.api.client.invoker.JSON;
 import io.slack.api.client.model.AppRateLimitedEvent;
 import org.junit.Before;

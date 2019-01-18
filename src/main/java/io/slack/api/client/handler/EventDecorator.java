@@ -1,4 +1,4 @@
-package io.slack.api.client;
+package io.slack.api.client.handler;
 
 import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.*;

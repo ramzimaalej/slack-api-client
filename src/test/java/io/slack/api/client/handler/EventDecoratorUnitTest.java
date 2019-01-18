@@ -1,13 +1,15 @@
-package io.slack.api.client;
+package io.slack.api.client.handler;
 
 import io.slack.api.client.exception.UnknownTypeException;
+import io.slack.api.client.handler.EventDecorator;
+import io.slack.api.client.handler.EventVisitor;
 import io.slack.api.client.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static io.slack.api.client.EventDecorator.*;
+import static io.slack.api.client.handler.EventDecorator.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
