@@ -1,32 +1,31 @@
 package io.slack.api.client.handler;
 
 import io.slack.api.client.exception.UnknownTypeException;
-import io.slack.api.client.handler.EventDecorator;
-import io.slack.api.client.handler.EventVisitor;
 import io.slack.api.client.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static io.slack.api.client.handler.EventDecorator.*;
+import static io.slack.api.client.handler.EventRouter.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * API tests for EventDecorator
+ * API tests for EventRouter
  */
-public class EventDecoratorUnitTest {
+public class EventRouterUnitTest {
 
-    private EventDecorator eventDecorator;
+    private EventRouter eventRouter;
 
     @Mock
-    private EventVisitor eventVisitorMock;
+    private EventProcessor eventProcessorMock;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        eventRouter = new EventRouter(eventProcessorMock);
     }
 
     @Test
@@ -35,10 +34,9 @@ public class EventDecoratorUnitTest {
         AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
         appRateLimitedEvent.setType(APP_RATE_LIMITED_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(appRateLimitedEvent);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(appRateLimitedEvent);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(AppRateLimitedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(AppRateLimitedEvent.class));
     }
 
     @Test(expected = UnknownTypeException.class)
@@ -47,8 +45,7 @@ public class EventDecoratorUnitTest {
         AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
         appRateLimitedEvent.setType("app_rate");
         // when
-        this.eventDecorator = new EventDecorator(appRateLimitedEvent);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(appRateLimitedEvent);
     }
 
     @Test(expected = UnknownTypeException.class)
@@ -60,8 +57,7 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(appMentionEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
     }
 
     @Test
@@ -73,10 +69,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(appMentionEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(AppMentionEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(AppMentionEvent.class));
     }
 
     @Test
@@ -88,10 +83,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(reactionAddedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ReactionAddedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ReactionAddedEvent.class));
     }
 
     @Test
@@ -103,10 +97,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(appUninstalledEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(AppUninstalledEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(AppUninstalledEvent.class));
     }
 
     @Test
@@ -118,10 +111,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelArchiveEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelArchiveEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelArchiveEvent.class));
     }
 
     @Test
@@ -133,10 +125,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelCreatedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelCreatedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelCreatedEvent.class));
     }
 
     @Test
@@ -148,10 +139,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelDeletedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelDeletedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelDeletedEvent.class));
     }
 
     @Test
@@ -163,10 +153,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelHistoryChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelHistoryChangedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelHistoryChangedEvent.class));
     }
 
     @Test
@@ -178,10 +167,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelLeftEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelLeftEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelLeftEvent.class));
     }
 
     @Test
@@ -193,10 +181,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelRenameEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelRenameEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelRenameEvent.class));
     }
 
     @Test
@@ -208,10 +195,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(channelUnarchiveEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(ChannelUnarchiveEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(ChannelUnarchiveEvent.class));
     }
 
     @Test
@@ -223,10 +209,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(dndUpdatedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(DndUpdatedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(DndUpdatedEvent.class));
     }
 
     @Test
@@ -238,10 +223,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(dndUpdatedUserEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(DndUpdatedUserEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(DndUpdatedUserEvent.class));
     }
 
     @Test
@@ -253,10 +237,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(emailDomainChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(EmailDomainChangedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(EmailDomainChangedEvent.class));
     }
 
     @Test
@@ -270,10 +253,9 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(emojiChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(EmojiAddedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(EmojiAddedEvent.class));
     }
 
     @Test
@@ -287,9 +269,8 @@ public class EventDecoratorUnitTest {
         eventCallback.setEvent(emojiChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventDecorator = new EventDecorator(eventCallback);
-        this.eventDecorator.accept(eventVisitorMock);
+        this.eventRouter.route(eventCallback);
         // then
-        verify(eventVisitorMock, times(1)).visit(any(EmojiRemovedEvent.class));
+        verify(eventProcessorMock, times(1)).process(any(EmojiRemovedEvent.class));
     }
 }

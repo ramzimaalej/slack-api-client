@@ -3,8 +3,7 @@ package io.slack.api.client.handler;
 import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.*;
 
-public final class EventDecorator {
-
+public class EventRouter {
     public static final String APP_RATE_LIMITED_TYPE = "app_rate_limited";
     public static final String EVENT_CALLBACK_TYPE = "event_callback";
     public static final String APP_MENTION_TYPE = "app_mention";
@@ -24,81 +23,81 @@ public final class EventDecorator {
     public static final String EMOJI_CHANGED_ADD_TYPE = "add";
     public static final String EMOJI_CHANGED_REMOVE_TYPE = "remove";
 
-    private EventPayload event;
+    private final EventProcessor eventProcessor;
 
-    public EventDecorator(EventPayload event) {
-        this.event = event;
+    public EventRouter(EventProcessor eventProcessor) {
+        this.eventProcessor = eventProcessor;
     }
 
-    void accept(EventVisitor visitor) {
+    void route(EventPayload event) {
         switch (event.getType()) {
             case APP_RATE_LIMITED_TYPE: {
-                visitor.visit((AppRateLimitedEvent) event);
+                eventProcessor.process((AppRateLimitedEvent) event);
                 break;
             }
             case EVENT_CALLBACK_TYPE: {
                 BaseEvent subEvent = ((EventCallback)event).getEvent();
                 switch (subEvent.getType()) {
                     case APP_MENTION_TYPE: {
-                        visitor.visit((AppMentionEvent) subEvent);
+                        eventProcessor.process((AppMentionEvent) subEvent);
                         break;
                     }
                     case REACTION_ADDED_TYPE: {
-                        visitor.visit((ReactionAddedEvent) subEvent);
+                        eventProcessor.process((ReactionAddedEvent) subEvent);
                         break;
                     }
                     case APP_UNINSTALLED_TYPE: {
-                        visitor.visit((AppUninstalledEvent) subEvent);
+                        eventProcessor.process((AppUninstalledEvent) subEvent);
                         break;
                     }
                     case CHANNEL_ARCHIVE_TYPE: {
-                        visitor.visit((ChannelArchiveEvent) subEvent);
+                        eventProcessor.process((ChannelArchiveEvent) subEvent);
                         break;
                     }
                     case CHANNEL_CREATED_TYPE: {
-                        visitor.visit((ChannelCreatedEvent) subEvent);
+                        eventProcessor.process((ChannelCreatedEvent) subEvent);
                         break;
                     }
                     case CHANNEL_DELETED_TYPE: {
-                        visitor.visit((ChannelDeletedEvent) subEvent);
+                        eventProcessor.process((ChannelDeletedEvent) subEvent);
                         break;
                     }
                     case CHANNEL_HISTORY_CHANGED_TYPE: {
-                        visitor.visit((ChannelHistoryChangedEvent) subEvent);
+                        eventProcessor.process((ChannelHistoryChangedEvent) subEvent);
                         break;
                     }
                     case CHANNEL_LEFT_TYPE: {
-                        visitor.visit((ChannelLeftEvent) subEvent);
+                        eventProcessor.process((ChannelLeftEvent) subEvent);
                         break;
                     }
                     case CHANNEL_RENAME_TYPE: {
-                        visitor.visit((ChannelRenameEvent) subEvent);
+                        eventProcessor.process((ChannelRenameEvent) subEvent);
                         break;
                     }
                     case CHANNEL_UNARCHIVE_TYPE: {
-                        visitor.visit((ChannelUnarchiveEvent) subEvent);
+                        eventProcessor.process((ChannelUnarchiveEvent) subEvent);
                         break;
                     }
                     case DND_UPDATED_TYPE: {
-                        visitor.visit((DndUpdatedEvent) subEvent);
+                        eventProcessor.process((DndUpdatedEvent) subEvent);
                         break;
                     }
                     case DND_UPDATED_USER_TYPE: {
-                        visitor.visit((DndUpdatedUserEvent) subEvent);
+                        eventProcessor.process((DndUpdatedUserEvent) subEvent);
                         break;
                     }
                     case EMAIL_DOMAIN_CHANGED_TYPE: {
-                        visitor.visit((EmailDomainChangedEvent) subEvent);
+                        eventProcessor.process((EmailDomainChangedEvent) subEvent);
                         break;
                     }
                     case EMOJI_CHANGED_TYPE: {
                         switch (((EmojiChangedEvent) subEvent).getSubtype()) {
                             case EMOJI_CHANGED_ADD_TYPE: {
-                                visitor.visit(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
+                                eventProcessor.process(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
                                 break;
                             }
                             case EMOJI_CHANGED_REMOVE_TYPE: {
-                                visitor.visit(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
+                                eventProcessor.process(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
                                 break;
                             }
                             default:

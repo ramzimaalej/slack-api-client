@@ -5,19 +5,18 @@ import io.slack.api.client.model.EventPayload;
 
 public final class EventHandler {
 
-    private EventVisitor eventVisitor;
+    private EventRouter eventRouter;
     private JSON jsonParser;
 
-    public EventHandler(EventVisitor eventVisitor, JSON jsonParser) {
-        this.eventVisitor = eventVisitor;
+    public EventHandler(EventRouter eventRouter, JSON jsonParser) {
+        this.eventRouter = eventRouter;
         this.jsonParser = jsonParser;
     }
 
     public void handleEvent(String payload) {
         try {
             EventPayload eventObject = jsonParser.deserialize(payload, EventPayload.class);
-            EventDecorator eventDecorator = new EventDecorator(eventObject);
-            eventDecorator.accept(eventVisitor);
+            eventRouter.route(eventObject);
         } catch (Exception e) {
             throw new RuntimeException("An error has occurred while handling slack event", e);
         }

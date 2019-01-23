@@ -1,7 +1,5 @@
 package io.slack.api.client.handler;
 
-import io.slack.api.client.handler.EventHandler;
-import io.slack.api.client.handler.EventVisitor;
 import io.slack.api.client.invoker.JSON;
 import io.slack.api.client.model.AppRateLimitedEvent;
 import org.junit.Before;
@@ -22,12 +20,12 @@ public class EventHandlerUnitTest {
     private EventHandler eventHandler;
 
     @Mock
-    private EventVisitor eventVisitorMock;
+    private EventRouter eventRouterMock;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        eventHandler = new EventHandler(eventVisitorMock, new JSON());
+        eventHandler = new EventHandler(eventRouterMock, new JSON());
     }
 
     @Test
@@ -40,11 +38,11 @@ public class EventHandlerUnitTest {
                 "    \"minute_rate_limited\": 1518467820,\n" +
                 "    \"api_app_id\": \"A123456\"\n" +
                 "}";
-        doNothing().when(eventVisitorMock).visit(any(AppRateLimitedEvent.class));
+        doNothing().when(eventRouterMock).route(any(AppRateLimitedEvent.class));
         //when: parse the payload
         eventHandler.handleEvent(payload);
         //then: an event object should be created
-        verify(eventVisitorMock, times(1)).visit(any(AppRateLimitedEvent.class));
+        verify(eventRouterMock, times(1)).route(any(AppRateLimitedEvent.class));
     }
 
     @Test(expected = RuntimeException.class)
@@ -57,7 +55,7 @@ public class EventHandlerUnitTest {
                 "    \"minute_rate_limited\": 1518467820,\n" +
                 "    \"api_app_id\": \"A123456\"\n" +
                 "}";
-        doThrow(new IOException()).when(eventVisitorMock).visit(any(AppRateLimitedEvent.class));
+        doThrow(new IOException()).when(eventRouterMock).route(any(AppRateLimitedEvent.class));
         //when: parse the payload
         eventHandler.handleEvent(payload);
     }

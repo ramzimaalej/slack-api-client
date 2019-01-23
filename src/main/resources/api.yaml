@@ -42,7 +42,6 @@ paths:
                 $ref: '#/components/schemas/ApiTestResponse'
       requestBody:
         $ref: '#/components/requestBodies/EmptyBody'
-
 externalDocs:
   description: Find out more about Slack API
   url: 'https://api.slack.com/'
