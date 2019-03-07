@@ -352,4 +352,20 @@ public class EventRouterUnitTest {
         // then
         verify(eventProcessorMock, times(1)).process(any(MessageDeletedEvent.class));
     }
+
+    @Test
+    public void shouldParseMessageRepliedEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(MESSAGE_REPLIED_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(MessageRepliedEvent.class));
+    }
 }
