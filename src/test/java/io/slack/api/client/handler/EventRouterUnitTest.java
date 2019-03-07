@@ -304,4 +304,20 @@ public class EventRouterUnitTest {
         // then
         verify(eventProcessorMock, times(1)).process(any(BotMessageEvent.class));
     }
+
+    @Test
+    public void shouldParseThreadBroadcastEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(THREAD_BROADCAST_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(ThreadBroadCastMessageEvent.class));
+    }
 }

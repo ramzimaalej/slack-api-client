@@ -387,7 +387,7 @@ components:
               type: string
             value:
               type: string
-    MessageEventEditedItem:
+    MessageEventItem:
       type: object
       required:
         - user
@@ -412,9 +412,51 @@ components:
               type: string
             username:
               type: string
+            thread_ts:
+              type: string
+            client_msg_id:
+              type: string
+            channel_type:
+              type: string
             icons:
               type: object
               additionalProperties:
                 type: string
+            root:
+              $ref: '#/components/schemas/RootMessageObject'
             edited:
-              $ref: '#/components/schemas/MessageEventEditedItem'
+              $ref: '#/components/schemas/MessageEventItem'
+    RootMessageObject:
+      type: object
+      required:
+        - user
+        - ts
+      properties:
+        client_msg_id:
+          type: string
+        type:
+          type: string
+        text:
+          type: string
+        user:
+          type: string
+        ts:
+          type: string
+        thread_ts:
+          type: string
+        reply_count:
+          type: integer
+          format: int64
+        reply_users_count:
+          type: integer
+          format: int64
+        latest_reply:
+          type: string
+        reply_users:
+          type: array
+          items:
+            type: string
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageEventItem'

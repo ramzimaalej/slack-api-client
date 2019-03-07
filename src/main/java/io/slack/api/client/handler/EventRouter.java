@@ -26,6 +26,7 @@ public class EventRouter implements Serializable {
     public static final String EMOJI_CHANGED_REMOVE_TYPE = "remove";
     public static final String MESSAGE_TYPE = "message";
     public static final String BOT_MESSAGE_TYPE = "bot_message";
+    public static final String THREAD_BROADCAST_TYPE = "thread_broadcast";
 
     private final EventProcessor eventProcessor;
 
@@ -135,6 +136,10 @@ public class EventRouter implements Serializable {
             switch (subtype) {
                 case BOT_MESSAGE_TYPE: {
                     eventProcessor.process(new BotMessageEvent((MessageEvent) subEvent));
+                    break;
+                }
+                case THREAD_BROADCAST_TYPE: {
+                    eventProcessor.process(new ThreadBroadCastMessageEvent((MessageEvent) subEvent));
                     break;
                 }
                 default:

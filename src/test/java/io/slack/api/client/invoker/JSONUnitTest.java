@@ -551,4 +551,81 @@ public class JSONUnitTest {
     }
 
 
+    @Test
+    public void shouldParseThreadBroadcastEvent() {
+        // should parse thread broadcast event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "      \"token\":\"kFIkPEunKHo76kY0ro6lcMuQ\",\n" +
+                "      \"team_id\":\"T78L3G5GS\",\n" +
+                "      \"api_app_id\":\"A8NTWH4KD\",\n" +
+                "      \"event\":{\n" +
+                "         \"type\":\"message\",\n" +
+                "         \"subtype\":\"thread_broadcast\",\n" +
+                "         \"text\":\"well something happened that screwed up my experience\",\n" +
+                "         \"user\":\"U78100SN4\",\n" +
+                "         \"ts\":\"1551929970.009500\",\n" +
+                "         \"thread_ts\":\"1551929925.008700\",\n" +
+                "         \"root\":{\n" +
+                "            \"client_msg_id\":\"ef9f112b-5906-4d6c-93ae-c335c721cc1f\",\n" +
+                "            \"type\":\"message\",\n" +
+                "            \"text\":\"normally, we are not doing autorefresh, just pushing new conversations to the top. <@U7LBRED37> can you confirm this\",\n" +
+                "            \"user\":\"U78E87R4Y\",\n" +
+                "            \"ts\":\"1551929925.008700\",\n" +
+                "            \"thread_ts\":\"1551929925.008700\",\n" +
+                "            \"reply_count\":1,\n" +
+                "            \"reply_users_count\":1,\n" +
+                "            \"latest_reply\":\"1551929970.009500\",\n" +
+                "            \"reply_users\":[\n" +
+                "               \"U78100SN4\"\n" +
+                "            ],\n" +
+                "            \"replies\":[\n" +
+                "               {\n" +
+                "                  \"user\":\"U78100SN4\",\n" +
+                "                  \"ts\":\"1551929970.009500\"\n" +
+                "               }\n" +
+                "            ]\n" +
+                "         },\n" +
+                "         \"client_msg_id\":\"fc6d3ea6-c28a-4638-83f7-9d817c181712\",\n" +
+                "         \"channel\":\"C8LFF92Q2\",\n" +
+                "         \"event_ts\":\"1551929970.009500\",\n" +
+                "         \"channel_type\":\"channel\"\n" +
+                "      },\n" +
+                "      \"type\":\"event_callback\",\n" +
+                "      \"event_id\":\"EvGRA7MYN7\",\n" +
+                "      \"event_time\":1551929970,\n" +
+                "      \"authed_users\":[\n" +
+                "         \"U8PT5GKV3\"\n" +
+                "      ]\n" +
+                "   }";
+
+        //when: "parse the payload";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(MessageEvent.class);
+        assertThat(event.getEvent().getType()).isEqualTo("message");
+        assertThat(((MessageEvent) event.getEvent()).getSubtype()).isEqualTo("thread_broadcast");
+        assertThat(((MessageEvent) event.getEvent()).getText()).isEqualTo("well something happened that screwed up my experience");
+        assertThat(event.getEvent().getUser()).isEqualTo("U78100SN4");
+        assertThat(event.getEvent().getTs()).isEqualTo("1551929970.009500");
+        assertThat(((MessageEvent) event.getEvent()).getThreadTs()).isEqualTo("1551929925.008700");
+        assertThat(((MessageEvent) event.getEvent()).getChannel()).isEqualTo("C8LFF92Q2");
+        assertThat(((MessageEvent) event.getEvent()).getClientMsgId()).isEqualTo("fc6d3ea6-c28a-4638-83f7-9d817c181712");
+        assertThat(event.getEvent().getEventTs()).isEqualTo("1551929970.009500");
+        assertThat(((MessageEvent) event.getEvent()).getChannelType()).isEqualTo("channel");
+        assertThat(((MessageEvent) event.getEvent()).getRoot()).isNotNull();
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getClientMsgId()).isEqualTo("ef9f112b-5906-4d6c-93ae-c335c721cc1f");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getType()).isEqualTo("message");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getText()).isEqualTo("normally, we are not doing autorefresh, just pushing new conversations to the top. <@U7LBRED37> can you confirm this");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getUser()).isEqualTo("U78E87R4Y");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getTs()).isEqualTo("1551929925.008700");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getThreadTs()).isEqualTo("1551929925.008700");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyCount()).isEqualTo(1);
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyUsersCount()).isEqualTo(1);
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getLatestReply()).isEqualTo("1551929970.009500");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyUsers().size()).isEqualTo(1);
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyUsers()).contains("U78100SN4");
+        assertThat(((MessageEvent) event.getEvent()).getRoot().getReplies().size()).isEqualTo(1);
+    }
 }
