@@ -246,7 +246,7 @@ public class EventRouterUnitTest {
     public void shouldParseEmojiAddedEvent() {
         // given
         EmojiChangedEvent emojiChangedEvent = new EmojiChangedEvent();
-        emojiChangedEvent.setSubtype("add");
+        emojiChangedEvent.setSubtype(EMOJI_CHANGED_ADD_TYPE);
         emojiChangedEvent.setType(EMOJI_CHANGED_TYPE);
 
         EventCallback eventCallback = new EventCallback();
@@ -262,7 +262,7 @@ public class EventRouterUnitTest {
     public void shouldParseEmojiRemovedEvent() {
         // given
         EmojiChangedEvent emojiChangedEvent = new EmojiChangedEvent();
-        emojiChangedEvent.setSubtype("remove");
+        emojiChangedEvent.setSubtype(EMOJI_CHANGED_REMOVE_TYPE);
         emojiChangedEvent.setType(EMOJI_CHANGED_TYPE);
 
         EventCallback eventCallback = new EventCallback();
@@ -272,5 +272,36 @@ public class EventRouterUnitTest {
         this.eventRouter.route(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(EmojiRemovedEvent.class));
+    }
+
+    @Test
+    public void shouldParseMessageEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(MessageEvent.class));
+    }
+
+    @Test
+    public void shouldParseBotMessageEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(BOT_MESSAGE_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(BotMessageEvent.class));
     }
 }

@@ -2,9 +2,10 @@ package io.slack.api.client.model;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class EmojiRemovedEvent {
+public class EmojiRemovedEvent implements Serializable {
 
     private final EmojiChangedEvent event;
 

@@ -29,7 +29,7 @@ public class EventHandlerUnitTest {
     }
 
     @Test
-    public void shouldParseEventAndInvokeVisitor() {
+    public void shouldParseEventAndInvokeRouter() {
         //given: receive the following payload
         String payload = "{\n" +
                 "    \"token\": \"Jhj5dZrVaK7ZwHHjRyZWjbDl\",\n" +
@@ -46,7 +46,7 @@ public class EventHandlerUnitTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void shouldPropagateExceptionFromVisitor() {
+    public void shouldPropagateExceptionFromRouter() {
         //given: receive the following payload
         String payload = "{\n" +
                 "    \"token\": \"Jhj5dZrVaK7ZwHHjRyZWjbDl\",\n" +

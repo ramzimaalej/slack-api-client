@@ -3,7 +3,9 @@ package io.slack.api.client.handler;
 import io.slack.api.client.invoker.JSON;
 import io.slack.api.client.model.EventPayload;
 
-public final class EventHandler {
+import java.io.Serializable;
+
+public final class EventHandler implements Serializable {
 
     private EventRouter eventRouter;
     private JSON jsonParser;

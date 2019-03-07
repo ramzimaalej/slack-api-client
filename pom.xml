@@ -106,7 +106,9 @@
               <modelPackage>io.slack.api.client.model</modelPackage>
               <apiPackage>io.slack.api.client.api</apiPackage>
               <invokerPackage>io.slack.api.client.invoker</invokerPackage>
+              <generateApis>true</generateApis>
               <generateApiTests>false</generateApiTests>
+              <generateSupportingFiles>true</generateSupportingFiles>
               <configOptions>
                 <java8>true</java8>
                 <sourceFolder>src/main/java/</sourceFolder>

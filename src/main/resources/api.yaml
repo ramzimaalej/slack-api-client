@@ -157,6 +157,7 @@ components:
           dnd_updated_user: '#/components/schemas/DndUpdatedUserEvent'
           email_domain_changed: '#/components/schemas/EmailDomainChangedEvent'
           emoji_changed: '#/components/schemas/EmojiChangedEvent'
+          message: '#/components/schemas/MessageEvent'
       required:
         - type
         - event_ts
@@ -386,3 +387,34 @@ components:
               type: string
             value:
               type: string
+    MessageEventEditedItem:
+      type: object
+      required:
+        - user
+        - ts
+      properties:
+        user:
+          type: string
+        ts:
+          type: string
+    MessageEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEvent'
+        - type: object
+          properties:
+            subtype:
+              type: string
+            channel:
+              type: string
+            text:
+              type: string
+            bot_id:
+              type: string
+            username:
+              type: string
+            icons:
+              type: object
+              additionalProperties:
+                type: string
+            edited:
+              $ref: '#/components/schemas/MessageEventEditedItem'

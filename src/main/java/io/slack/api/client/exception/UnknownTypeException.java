@@ -1,6 +1,8 @@
 package io.slack.api.client.exception;
 
-public class UnknownTypeException extends RuntimeException {
+import java.io.Serializable;
+
+public class UnknownTypeException extends RuntimeException implements Serializable {
 
     public UnknownTypeException(String message) {
         super(message);

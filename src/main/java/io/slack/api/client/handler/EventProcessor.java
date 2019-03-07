@@ -2,7 +2,9 @@ package io.slack.api.client.handler;
 
 import io.slack.api.client.model.*;
 
-public interface EventProcessor {
+import java.io.Serializable;
+
+public interface EventProcessor extends Serializable {
     void process(AppRateLimitedEvent event);
     void process(AppMentionEvent event);
     void process(ReactionAddedEvent event);
@@ -19,4 +21,6 @@ public interface EventProcessor {
     void process(EmailDomainChangedEvent event);
     void process(EmojiRemovedEvent event);
     void process(EmojiAddedEvent event);
+    void process(MessageEvent event);
+    void process(BotMessageEvent event);
 }

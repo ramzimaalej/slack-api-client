@@ -1,6 +1,8 @@
 package io.slack.api.client.model;
 
-public class EmojiAddedEvent {
+import java.io.Serializable;
+
+public class EmojiAddedEvent implements Serializable {
 
     private final EmojiChangedEvent event;
 

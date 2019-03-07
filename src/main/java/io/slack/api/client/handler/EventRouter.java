@@ -3,7 +3,9 @@ package io.slack.api.client.handler;
 import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.*;
 
-public class EventRouter {
+import java.io.Serializable;
+
+public class EventRouter implements Serializable {
     public static final String APP_RATE_LIMITED_TYPE = "app_rate_limited";
     public static final String EVENT_CALLBACK_TYPE = "event_callback";
     public static final String APP_MENTION_TYPE = "app_mention";
@@ -22,6 +24,8 @@ public class EventRouter {
     public static final String EMOJI_CHANGED_TYPE = "emoji_changed";
     public static final String EMOJI_CHANGED_ADD_TYPE = "add";
     public static final String EMOJI_CHANGED_REMOVE_TYPE = "remove";
+    public static final String MESSAGE_TYPE = "message";
+    public static final String BOT_MESSAGE_TYPE = "bot_message";
 
     private final EventProcessor eventProcessor;
 
@@ -36,7 +40,7 @@ public class EventRouter {
                 break;
             }
             case EVENT_CALLBACK_TYPE: {
-                BaseEvent subEvent = ((EventCallback)event).getEvent();
+                BaseEvent subEvent = ((EventCallback) event).getEvent();
                 switch (subEvent.getType()) {
                     case APP_MENTION_TYPE: {
                         eventProcessor.process((AppMentionEvent) subEvent);
@@ -91,18 +95,11 @@ public class EventRouter {
                         break;
                     }
                     case EMOJI_CHANGED_TYPE: {
-                        switch (((EmojiChangedEvent) subEvent).getSubtype()) {
-                            case EMOJI_CHANGED_ADD_TYPE: {
-                                eventProcessor.process(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
-                                break;
-                            }
-                            case EMOJI_CHANGED_REMOVE_TYPE: {
-                                eventProcessor.process(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
-                                break;
-                            }
-                            default:
-                                throw new UnknownTypeException("Unknown type: " + event.getType());
-                        }
+                        processEmojiChangedEvent(subEvent);
+                        break;
+                    }
+                    case MESSAGE_TYPE: {
+                        processMessageEvent(subEvent);
                         break;
                     }
                     default:
@@ -112,6 +109,37 @@ public class EventRouter {
             }
             default:
                 throw new UnknownTypeException("Unknown type: " + event.getType());
+        }
+    }
+
+    private void processEmojiChangedEvent(BaseEvent subEvent) {
+        switch (((EmojiChangedEvent) subEvent).getSubtype()) {
+            case EMOJI_CHANGED_ADD_TYPE: {
+                eventProcessor.process(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
+                break;
+            }
+            case EMOJI_CHANGED_REMOVE_TYPE: {
+                eventProcessor.process(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
+                break;
+            }
+            default:
+                throw new UnknownTypeException(String.format("Unknown type: %s", subEvent.getType()));
+        }
+    }
+
+    private void processMessageEvent(BaseEvent subEvent) {
+        String subtype = ((MessageEvent) subEvent).getSubtype();
+        if (null == subtype) {
+            eventProcessor.process((MessageEvent) subEvent);
+        } else {
+            switch (subtype) {
+                case BOT_MESSAGE_TYPE: {
+                    eventProcessor.process(new BotMessageEvent((MessageEvent) subEvent));
+                    break;
+                }
+                default:
+                    throw new UnknownTypeException(String.format("Unknown type: %s", subEvent.getType()));
+            }
         }
     }
 }
