@@ -24,4 +24,6 @@ public interface EventProcessor extends Serializable {
     void process(MessageEvent event);
     void process(BotMessageEvent event);
     void process(ThreadBroadCastMessageEvent event);
+    void process(MessageEditedEvent event);
+    void process(MessageDeletedEvent event);
 }

@@ -320,4 +320,36 @@ public class EventRouterUnitTest {
         // then
         verify(eventProcessorMock, times(1)).process(any(ThreadBroadCastMessageEvent.class));
     }
+
+    @Test
+    public void shouldParseMessageEditedEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(MESSAGE_EDITED_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(MessageEditedEvent.class));
+    }
+
+    @Test
+    public void shouldParseMessageDeletedEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(MESSAGE_DELETED_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        verify(eventProcessorMock, times(1)).process(any(MessageDeletedEvent.class));
+    }
 }

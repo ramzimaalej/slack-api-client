@@ -550,7 +550,6 @@ public class JSONUnitTest {
         assertThat(((MessageEvent) event.getEvent()).getIcons()).isEmpty();
     }
 
-
     @Test
     public void shouldParseThreadBroadcastEvent() {
         // should parse thread broadcast event
@@ -627,5 +626,55 @@ public class JSONUnitTest {
         assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyUsers().size()).isEqualTo(1);
         assertThat(((MessageEvent) event.getEvent()).getRoot().getReplyUsers()).contains("U78100SN4");
         assertThat(((MessageEvent) event.getEvent()).getRoot().getReplies().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void shouldParseMessageEditedEvent() {
+        // should parse bot_message event
+        //given: "receive the following payload"
+        String payload = "{\n" +
+                "    \"token\": \"XXYYZZ\",\n" +
+                "    \"team_id\": \"TXXXXXXXX\",\n" +
+                "    \"api_app_id\": \"AXXXXXXXXX\",\n" +
+                "    \"event\":" +
+                "{\n" +
+                "    \"type\": \"message\",\n" +
+                "    \"subtype\": \"message_changed\",\n" +
+                "    \"hidden\": true,\n" +
+                "    \"channel\": \"C2147483705\",\n" +
+                "    \"ts\": \"1358878755.000001\",\n" +
+                "    \"message\": {\n" +
+                "        \"type\": \"message\",\n" +
+                "        \"user\": \"U2147483697\",\n" +
+                "        \"text\": \"Hello, world!\",\n" +
+                "        \"ts\": \"1355517523.000005\",\n" +
+                "        \"edited\": {\n" +
+                "            \"user\": \"U2147483697\",\n" +
+                "            \"ts\": \"1358878755.000001\"\n" +
+                "        }\n" +
+                "    }\n" +
+                "},"
+                +
+                "    \"type\": \"event_callback\",\n" +
+                "    \"event_id\": \"EvXXXXXXXX\",\n" +
+                "    \"event_time\": 1234567890\n" +
+                "}";
+        //when: "parse the payload";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(MessageEvent.class);
+        assertThat(event.getEvent().getType()).isEqualTo("message");
+        assertThat(((MessageEvent) event.getEvent()).getSubtype()).isEqualTo("message_changed");
+        assertThat(((MessageEvent) event.getEvent()).getHidden()).isTrue();
+        assertThat(((MessageEvent) event.getEvent()).getChannel()).isEqualTo("C2147483705");
+        assertThat(event.getEvent().getTs()).isEqualTo("1358878755.000001");
+        assertThat(((MessageEvent) event.getEvent()).getMessage()).isNotNull();
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getType()).isEqualTo("message");
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getUser()).isEqualTo("U2147483697");
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getText()).isEqualTo("Hello, world!");
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getTs()).isEqualTo("1355517523.000005");
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getEdited().getTs()).isEqualTo("1358878755.000001");
+        assertThat(((MessageEvent) event.getEvent()).getMessage().getEdited().getUser()).isEqualTo("U2147483697");
     }
 }

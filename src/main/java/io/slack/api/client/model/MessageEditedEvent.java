@@ -5,11 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Map;
 
-public class BotMessageEvent implements Serializable {
+public class MessageEditedEvent implements Serializable {
 
     private final MessageEvent event;
 
-    public BotMessageEvent(MessageEvent event) {
+    public MessageEditedEvent(MessageEvent event) {
         this.event = event;
     }
 
