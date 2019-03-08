@@ -5,7 +5,7 @@ import io.slack.api.client.model.EventPayload;
 
 import java.io.Serializable;
 
-public final class EventHandler implements Serializable {
+public final class EventHandler<T> implements Serializable {
 
     private EventRouter eventRouter;
     private JSON jsonParser;
@@ -15,10 +15,10 @@ public final class EventHandler implements Serializable {
         this.jsonParser = jsonParser;
     }
 
-    public void handleEvent(String payload) {
+    public T handleEvent(String payload) {
         try {
             EventPayload eventObject = jsonParser.deserialize(payload, EventPayload.class);
-            eventRouter.route(eventObject);
+            return (T) eventRouter.execute(eventObject);
         } catch (Exception e) {
             throw new RuntimeException("An error has occurred while handling slack event", e);
         }
