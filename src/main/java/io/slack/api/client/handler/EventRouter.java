@@ -30,6 +30,7 @@ public class EventRouter implements Serializable {
     public static final String MESSAGE_EDITED_TYPE = "message_changed";
     public static final String MESSAGE_DELETED_TYPE = "message_deleted";
     public static final String MESSAGE_REPLIED_TYPE = "message_replied";
+    public static final String FILE_SHARE_TYPE = "file_share";
 
     private final EventProcessor eventProcessor;
 
@@ -155,6 +156,10 @@ public class EventRouter implements Serializable {
                 }
                 case MESSAGE_REPLIED_TYPE: {
                     eventProcessor.process(new MessageRepliedEvent((MessageEvent) subEvent));
+                    break;
+                }
+                case FILE_SHARE_TYPE: {
+                    eventProcessor.process(new FileShareEvent((MessageEvent) subEvent));
                     break;
                 }
                 default:

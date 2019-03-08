@@ -5,12 +5,17 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Map;
 
-public class BotMessageEvent implements Serializable {
+public class BotMessageEvent extends AbstractMessageEvent implements Serializable {
 
     private final MessageEvent event;
 
     public BotMessageEvent(MessageEvent event) {
         this.event = event;
+    }
+
+    @Override
+    public boolean isActionEvent() {
+        return false;
     }
 
     public MessageEvent subtype(String subtype) {
@@ -147,16 +152,16 @@ public class BotMessageEvent implements Serializable {
         event.setIcons(icons);
     }
 
-    public MessageEvent root(RootMessageObject root) {
+    public MessageEvent root(RootMessageItem root) {
         return event.root(root);
     }
 
     @ApiModelProperty("")
-    public RootMessageObject getRoot() {
+    public RootMessageItem getRoot() {
         return event.getRoot();
     }
 
-    public void setRoot(RootMessageObject root) {
+    public void setRoot(RootMessageItem root) {
         event.setRoot(root);
     }
 
@@ -173,16 +178,16 @@ public class BotMessageEvent implements Serializable {
         event.setEdited(edited);
     }
 
-    public MessageEvent message(RootMessageObject message) {
+    public MessageEvent message(RootMessageItem message) {
         return event.message(message);
     }
 
     @ApiModelProperty("")
-    public RootMessageObject getMessage() {
+    public RootMessageItem getMessage() {
         return event.getMessage();
     }
 
-    public void setMessage(RootMessageObject message) {
+    public void setMessage(RootMessageItem message) {
         event.setMessage(message);
     }
 

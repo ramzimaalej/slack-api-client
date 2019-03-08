@@ -414,27 +414,34 @@ components:
               type: string
             thread_ts:
               type: string
+            deleted_ts:
+              type: string
             client_msg_id:
               type: string
             channel_type:
               type: string
             hidden:
               type: boolean
+            upload:
+              type: boolean
             icons:
               type: object
               additionalProperties:
                 type: string
             root:
-              $ref: '#/components/schemas/RootMessageObject'
+              $ref: '#/components/schemas/RootMessageItem'
             edited:
               $ref: '#/components/schemas/MessageEventItem'
             message:
-              $ref: '#/components/schemas/RootMessageObject'
-    RootMessageObject:
+              $ref: '#/components/schemas/RootMessageItem'
+            previous_message:
+              $ref: '#/components/schemas/RootMessageItem'
+            files:
+              type: array
+              items:
+                $ref: '#/components/schemas/MessageFilesItem'
+    RootMessageItem:
       type: object
-      required:
-        - user
-        - ts
       properties:
         client_msg_id:
           type: string
@@ -454,6 +461,8 @@ components:
         reply_users_count:
           type: integer
           format: int64
+        upload:
+          type: boolean
         latest_reply:
           type: string
         reply_users:
@@ -466,3 +475,53 @@ components:
             $ref: '#/components/schemas/MessageEventItem'
         edited:
           $ref: '#/components/schemas/MessageEventItem'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageFilesItem'
+    MessageFilesItem:
+      type: object
+      properties:
+        id:
+          type: string
+        created:
+          type: integer
+          format: int64
+        timestamp:
+          type: integer
+          format: int64
+        name:
+          type: string
+        title:
+          type: string
+        mimetype:
+          type: string
+        filetype:
+          type: string
+        pretty_type:
+          type: string
+        user:
+          type: string
+        editable:
+          type: boolean
+        latest_reply:
+          type: string
+        size:
+          type: integer
+          format: int64
+        mode:
+          type: string
+        is_external:
+          type: boolean
+        external_type:
+          type: string
+        is_public:
+          type: boolean
+        public_url_shared:
+          type: boolean
+        display_as_bot:
+          type: boolean
+        username:
+          type: string
+      additionalProperties:
+        type: string

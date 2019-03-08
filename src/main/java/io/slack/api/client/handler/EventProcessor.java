@@ -27,4 +27,5 @@ public interface EventProcessor extends Serializable {
     void process(MessageEditedEvent event);
     void process(MessageDeletedEvent event);
     void process(MessageRepliedEvent event);
+    void process(FileShareEvent event);
 }

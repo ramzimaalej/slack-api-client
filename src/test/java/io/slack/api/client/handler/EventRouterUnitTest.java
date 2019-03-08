@@ -4,10 +4,12 @@ import io.slack.api.client.exception.UnknownTypeException;
 import io.slack.api.client.model.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static io.slack.api.client.handler.EventRouter.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -301,8 +303,11 @@ public class EventRouterUnitTest {
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventRouter.route(eventCallback);
-        // then
-        verify(eventProcessorMock, times(1)).process(any(BotMessageEvent.class));
+
+        ArgumentCaptor<BotMessageEvent> argumentCaptor = ArgumentCaptor.forClass(BotMessageEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isFalse();
     }
 
     @Test
@@ -318,7 +323,10 @@ public class EventRouterUnitTest {
         // when
         this.eventRouter.route(eventCallback);
         // then
-        verify(eventProcessorMock, times(1)).process(any(ThreadBroadCastMessageEvent.class));
+        ArgumentCaptor<ThreadBroadCastMessageEvent> argumentCaptor = ArgumentCaptor.forClass(ThreadBroadCastMessageEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isFalse();
     }
 
     @Test
@@ -333,8 +341,12 @@ public class EventRouterUnitTest {
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventRouter.route(eventCallback);
+
         // then
-        verify(eventProcessorMock, times(1)).process(any(MessageEditedEvent.class));
+        ArgumentCaptor<MessageEditedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageEditedEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isTrue();
     }
 
     @Test
@@ -349,8 +361,12 @@ public class EventRouterUnitTest {
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventRouter.route(eventCallback);
+
         // then
-        verify(eventProcessorMock, times(1)).process(any(MessageDeletedEvent.class));
+        ArgumentCaptor<MessageDeletedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageDeletedEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isTrue();
     }
 
     @Test
@@ -365,7 +381,30 @@ public class EventRouterUnitTest {
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
         this.eventRouter.route(eventCallback);
+
         // then
-        verify(eventProcessorMock, times(1)).process(any(MessageRepliedEvent.class));
+        ArgumentCaptor<MessageRepliedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageRepliedEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isFalse();
+    }
+
+    @Test
+    public void shouldParseFileShareEvent() {
+        // given
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setSubtype(FILE_SHARE_TYPE);
+        messageEvent.setType(MESSAGE_TYPE);
+
+        EventCallback eventCallback = new EventCallback();
+        eventCallback.setEvent(messageEvent);
+        eventCallback.setType(EVENT_CALLBACK_TYPE);
+        // when
+        this.eventRouter.route(eventCallback);
+        // then
+        ArgumentCaptor<FileShareEvent> argumentCaptor = ArgumentCaptor.forClass(FileShareEvent.class);
+
+        verify(eventProcessorMock, times(1)).process(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isActionEvent()).isFalse();
     }
 }

@@ -732,4 +732,198 @@ public class JSONUnitTest {
         assertThat(((MessageEvent) event.getEvent()).getMessage().getReplyCount()).isEqualTo(1);
         assertThat(((MessageEvent) event.getEvent()).getMessage().getReplies().size()).isEqualTo(1);
     }
+
+    @Test
+    public void shouldParseFileRemovedFromMessageEvent() {
+        String payload = "{\n" +
+                "  \"token\": \"jtwwY9XqRt9ZEQALTmA2sqyz\",\n" +
+                "  \"team_id\": \"T81HZS34K\",\n" +
+                "  \"api_app_id\": \"A8NTWJFD1\",\n" +
+                "  \"event\": {\n" +
+                "    \"type\": \"message\",\n" +
+                "    \"subtype\": \"message_changed\",\n" +
+                "    \"hidden\": true,\n" +
+                "    \"message\": {\n" +
+                "      \"type\": \"message\",\n" +
+                "      \"text\": \"test\",\n" +
+                "      \"files\": [\n" +
+                "        {\n" +
+                "          \"id\": \"FGSKLHTEW\",\n" +
+                "          \"mode\": \"tombstone\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"upload\": true,\n" +
+                "      \"user\": \"U814ZL649\",\n" +
+                "      \"display_as_bot\": null,\n" +
+                "      \"ts\": \"1552018966.001300\"\n" +
+                "    },\n" +
+                "    \"channel\": \"C814ZLCQ1\",\n" +
+                "    \"previous_message\": {\n" +
+                "      \"type\": \"message\",\n" +
+                "      \"text\": \"test\",\n" +
+                "      \"files\": [\n" +
+                "        {\n" +
+                "          \"id\": \"FGSKLHTEW\",\n" +
+                "          \"mode\": \"tombstone\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"upload\": true,\n" +
+                "      \"user\": \"U814ZL649\",\n" +
+                "      \"display_as_bot\": null,\n" +
+                "      \"ts\": \"1552018966.001300\"\n" +
+                "    },\n" +
+                "    \"event_ts\": \"1552024839.000600\",\n" +
+                "    \"ts\": \"1552024839.000600\",\n" +
+                "    \"channel_type\": \"channel\"\n" +
+                "  },\n" +
+                "  \"type\": \"event_callback\",\n" +
+                "  \"event_id\": \"EvGT11RVK7\",\n" +
+                "  \"event_time\": 1552024839,\n" +
+                "  \"authed_users\": [\n" +
+                "    \"U8QPU32CU\"\n" +
+                "  ]\n" +
+                "}";
+
+        //when: "parse the payload";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(MessageEvent.class);
+        assertThat(event.getEvent().getType()).isEqualTo("message");
+    }
+
+    @Test
+    public void shouldParseFileShareEvent() {
+        String payload = "{\n" +
+                "  \"token\": \"jtwwY9XqRt9ZEQALTmA2sqyz\",\n" +
+                "  \"team_id\": \"T81HZS34K\",\n" +
+                "  \"api_app_id\": \"A8NTWJFD1\",\n" +
+                "  \"event\": {\n" +
+                "    \"type\": \"message\",\n" +
+                "    \"text\": \"test\",\n" +
+                "    \"files\": [\n" +
+                "      {\n" +
+                "        \"id\": \"FGSKLHTEW\",\n" +
+                "        \"created\": 1552018961,\n" +
+                "        \"timestamp\": 1552018961,\n" +
+                "        \"name\": \"20181203_112027.jpg\",\n" +
+                "        \"title\": \"20181203_112027.jpg\",\n" +
+                "        \"mimetype\": \"image/jpeg\",\n" +
+                "        \"filetype\": \"jpg\",\n" +
+                "        \"pretty_type\": \"JPEG\",\n" +
+                "        \"user\": \"U814ZL649\",\n" +
+                "        \"editable\": false,\n" +
+                "        \"size\": 2936049,\n" +
+                "        \"mode\": \"hosted\",\n" +
+                "        \"is_external\": false,\n" +
+                "        \"external_type\": \"\",\n" +
+                "        \"is_public\": false,\n" +
+                "        \"public_url_shared\": false,\n" +
+                "        \"display_as_bot\": false,\n" +
+                "        \"username\": \"\",\n" +
+                "        \"url_private\": \"https://files.slack.com/files-pri/T81HZS34K-FGSKLHTEW/20181203_112027.jpg\",\n" +
+                "        \"url_private_download\": \"https://files.slack.com/files-pri/T81HZS34K-FGSKLHTEW/download/20181203_112027.jpg\",\n" +
+                "        \"thumb_64\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_64.jpg\",\n" +
+                "        \"thumb_80\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_80.jpg\",\n" +
+                "        \"thumb_360\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_360.jpg\",\n" +
+                "        \"thumb_360_w\": 360,\n" +
+                "        \"thumb_360_h\": 270,\n" +
+                "        \"thumb_480\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_480.jpg\",\n" +
+                "        \"thumb_480_w\": 480,\n" +
+                "        \"thumb_480_h\": 360,\n" +
+                "        \"thumb_160\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_160.jpg\",\n" +
+                "        \"thumb_720\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_720.jpg\",\n" +
+                "        \"thumb_720_w\": 720,\n" +
+                "        \"thumb_720_h\": 540,\n" +
+                "        \"thumb_800\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_800.jpg\",\n" +
+                "        \"thumb_800_w\": 800,\n" +
+                "        \"thumb_800_h\": 600,\n" +
+                "        \"thumb_960\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_960.jpg\",\n" +
+                "        \"thumb_960_w\": 960,\n" +
+                "        \"thumb_960_h\": 720,\n" +
+                "        \"thumb_1024\": \"https://files.slack.com/files-tmb/T81HZS34K-FGSKLHTEW-a890a3e19b/20181203_112027_1024.jpg\",\n" +
+                "        \"thumb_1024_w\": 1024,\n" +
+                "        \"thumb_1024_h\": 768,\n" +
+                "        \"image_exif_rotation\": 1,\n" +
+                "        \"original_w\": 4032,\n" +
+                "        \"original_h\": 3024,\n" +
+                "        \"permalink\": \"https://veamlydev.slack.com/files/U814ZL649/FGSKLHTEW/20181203_112027.jpg\",\n" +
+                "        \"permalink_public\": \"https://slack-files.com/T81HZS34K-FGSKLHTEW-3990c9b507\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"upload\": true,\n" +
+                "    \"user\": \"U814ZL649\",\n" +
+                "    \"display_as_bot\": false,\n" +
+                "    \"ts\": \"1552018966.001300\",\n" +
+                "    \"channel\": \"C814ZLCQ1\",\n" +
+                "    \"subtype\": \"file_share\",\n" +
+                "    \"event_ts\": \"1552018966.001300\",\n" +
+                "    \"channel_type\": \"channel\"\n" +
+                "  },\n" +
+                "  \"type\": \"event_callback\",\n" +
+                "  \"event_id\": \"EvGU2YTX46\",\n" +
+                "  \"event_time\": 1552018966,\n" +
+                "  \"authed_users\": [\n" +
+                "    \"U8QPU32CU\"\n" +
+                "  ]\n" +
+                "}";
+
+        //when: "parse the payload";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(MessageEvent.class);
+        assertThat(event.getEvent().getType()).isEqualTo("message");
+    }
+
+    @Test
+    public void shouldParseMessageDeletedWithFile() {
+        String payload = "{\n" +
+                "  \"token\": \"jtwwY9XqRt9ZEQALTmA2sqyz\",\n" +
+                "  \"team_id\": \"T81HZS34K\",\n" +
+                "  \"api_app_id\": \"A8NTWJFD1\",\n" +
+                "  \"event\": {\n" +
+                "    \"type\": \"message\",\n" +
+                "    \"subtype\": \"message_deleted\",\n" +
+                "    \"hidden\": true,\n" +
+                "    \"deleted_ts\": \"1552018532.001000\",\n" +
+                "    \"channel\": \"C814ZLCQ1\",\n" +
+                "    \"previous_message\": {\n" +
+                "      \"type\": \"message\",\n" +
+                "      \"text\": \"\",\n" +
+                "      \"files\": [\n" +
+                "        {\n" +
+                "          \"id\": \"FGRSWLD4Y\",\n" +
+                "          \"mode\": \"tombstone\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"upload\": true,\n" +
+                "      \"user\": \"U814ZL649\",\n" +
+                "      \"display_as_bot\": null,\n" +
+                "      \"ts\": \"1552018532.001000\"\n" +
+                "    },\n" +
+                "    \"event_ts\": \"1552026973.001000\",\n" +
+                "    \"ts\": \"1552026973.001000\",\n" +
+                "    \"channel_type\": \"channel\"\n" +
+                "  },\n" +
+                "  \"type\": \"event_callback\",\n" +
+                "  \"event_id\": \"EvGU4N6Y9L\",\n" +
+                "  \"event_time\": 1552026973,\n" +
+                "  \"authed_users\": [\n" +
+                "    \"U8QPU32CU\"\n" +
+                "  ]\n" +
+                "}";
+
+        //when: "parse the payload";
+        //when: "parse the payload"
+        EventCallback event = json.deserialize(payload, EventCallback.class);
+
+        //then: "an event object should be created"
+        assertThat(event.getEvent()).isInstanceOf(MessageEvent.class);
+        assertThat(event.getEvent().getType()).isEqualTo("message");
+        assertThat(((MessageEvent) event.getEvent()).getSubtype()).isEqualTo("message_deleted");
+        assertThat(((MessageEvent) event.getEvent()).getDeletedTs()).isEqualTo("1552018532.001000");
+    }
 }

@@ -3,19 +3,20 @@ package io.slack.api.client.model;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
-public class MessageEditedEvent extends AbstractMessageEvent implements Serializable {
+public class FileShareEvent extends AbstractMessageEvent implements Serializable {
 
     private final MessageEvent event;
 
-    public MessageEditedEvent(MessageEvent event) {
+    public FileShareEvent(MessageEvent event) {
         this.event = event;
     }
 
     @Override
     public boolean isActionEvent() {
-        return true;
+        return false;
     }
 
     public MessageEvent subtype(String subtype) {
@@ -135,6 +136,19 @@ public class MessageEditedEvent extends AbstractMessageEvent implements Serializ
         event.setHidden(hidden);
     }
 
+    public MessageEvent upload(Boolean upload) {
+        return event.upload(upload);
+    }
+
+    @ApiModelProperty("")
+    public Boolean getUpload() {
+        return event.getUpload();
+    }
+
+    public void setUpload(Boolean upload) {
+        event.setUpload(upload);
+    }
+
     public MessageEvent icons(Map<String, String> icons) {
         return event.icons(icons);
     }
@@ -189,6 +203,36 @@ public class MessageEditedEvent extends AbstractMessageEvent implements Serializ
 
     public void setMessage(RootMessageItem message) {
         event.setMessage(message);
+    }
+
+    public MessageEvent previousMessage(RootMessageItem previousMessage) {
+        return event.previousMessage(previousMessage);
+    }
+
+    @ApiModelProperty("")
+    public RootMessageItem getPreviousMessage() {
+        return event.getPreviousMessage();
+    }
+
+    public void setPreviousMessage(RootMessageItem previousMessage) {
+        event.setPreviousMessage(previousMessage);
+    }
+
+    public MessageEvent files(List<MessageFilesItem> files) {
+        return event.files(files);
+    }
+
+    public MessageEvent addFilesItem(MessageFilesItem filesItem) {
+        return event.addFilesItem(filesItem);
+    }
+
+    @ApiModelProperty("")
+    public List<MessageFilesItem> getFiles() {
+        return event.getFiles();
+    }
+
+    public void setFiles(List<MessageFilesItem> files) {
+        event.setFiles(files);
     }
 
     public BaseEvent eventTs(String eventTs) {
