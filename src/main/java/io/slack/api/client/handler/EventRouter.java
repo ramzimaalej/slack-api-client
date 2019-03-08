@@ -5,7 +5,7 @@ import io.slack.api.client.model.*;
 
 import java.io.Serializable;
 
-public class EventRouter implements Serializable {
+public class EventRouter<T> implements Serializable {
     public static final String APP_RATE_LIMITED_TYPE = "app_rate_limited";
     public static final String EVENT_CALLBACK_TYPE = "event_callback";
     public static final String APP_MENTION_TYPE = "app_mention";
@@ -38,129 +38,104 @@ public class EventRouter implements Serializable {
         this.eventProcessor = eventProcessor;
     }
 
-    void route(EventPayload event) {
+    T execute(EventPayload event) {
         switch (event.getType()) {
             case APP_RATE_LIMITED_TYPE: {
-                eventProcessor.process((AppRateLimitedEvent) event);
-                break;
+                return (T) eventProcessor.process((AppRateLimitedEvent) event);
             }
             case EVENT_CALLBACK_TYPE: {
                 BaseEvent subEvent = ((EventCallback) event).getEvent();
                 switch (subEvent.getType()) {
                     case APP_MENTION_TYPE: {
-                        eventProcessor.process((AppMentionEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((AppMentionEvent) subEvent);
                     }
                     case REACTION_ADDED_TYPE: {
-                        eventProcessor.process((ReactionAddedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ReactionAddedEvent) subEvent);
                     }
                     case APP_UNINSTALLED_TYPE: {
-                        eventProcessor.process((AppUninstalledEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((AppUninstalledEvent) subEvent);
                     }
                     case CHANNEL_ARCHIVE_TYPE: {
-                        eventProcessor.process((ChannelArchiveEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelArchiveEvent) subEvent);
                     }
                     case CHANNEL_CREATED_TYPE: {
-                        eventProcessor.process((ChannelCreatedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelCreatedEvent) subEvent);
                     }
                     case CHANNEL_DELETED_TYPE: {
-                        eventProcessor.process((ChannelDeletedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelDeletedEvent) subEvent);
                     }
                     case CHANNEL_HISTORY_CHANGED_TYPE: {
-                        eventProcessor.process((ChannelHistoryChangedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelHistoryChangedEvent) subEvent);
                     }
                     case CHANNEL_LEFT_TYPE: {
-                        eventProcessor.process((ChannelLeftEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelLeftEvent) subEvent);
                     }
                     case CHANNEL_RENAME_TYPE: {
-                        eventProcessor.process((ChannelRenameEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelRenameEvent) subEvent);
                     }
                     case CHANNEL_UNARCHIVE_TYPE: {
-                        eventProcessor.process((ChannelUnarchiveEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((ChannelUnarchiveEvent) subEvent);
                     }
                     case DND_UPDATED_TYPE: {
-                        eventProcessor.process((DndUpdatedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((DndUpdatedEvent) subEvent);
                     }
                     case DND_UPDATED_USER_TYPE: {
-                        eventProcessor.process((DndUpdatedUserEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((DndUpdatedUserEvent) subEvent);
                     }
                     case EMAIL_DOMAIN_CHANGED_TYPE: {
-                        eventProcessor.process((EmailDomainChangedEvent) subEvent);
-                        break;
+                        return (T) eventProcessor.process((EmailDomainChangedEvent) subEvent);
                     }
                     case EMOJI_CHANGED_TYPE: {
-                        processEmojiChangedEvent(subEvent);
-                        break;
+                        return processEmojiChangedEvent(subEvent);
                     }
                     case MESSAGE_TYPE: {
-                        processMessageEvent(subEvent);
-                        break;
+                        return processMessageEvent(subEvent);
                     }
                     default:
                         throw new UnknownTypeException("Unknown type: " + event.getType());
                 }
-                break;
             }
             default:
                 throw new UnknownTypeException("Unknown type: " + event.getType());
         }
     }
 
-    private void processEmojiChangedEvent(BaseEvent subEvent) {
+    private T processEmojiChangedEvent(BaseEvent subEvent) {
         switch (((EmojiChangedEvent) subEvent).getSubtype()) {
             case EMOJI_CHANGED_ADD_TYPE: {
-                eventProcessor.process(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
-                break;
+                return (T) eventProcessor.process(new EmojiAddedEvent((EmojiChangedEvent) subEvent));
             }
             case EMOJI_CHANGED_REMOVE_TYPE: {
-                eventProcessor.process(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
-                break;
+                return (T) eventProcessor.process(new EmojiRemovedEvent((EmojiChangedEvent) subEvent));
             }
             default:
                 throw new UnknownTypeException(String.format("Unknown type: %s", subEvent.getType()));
         }
     }
 
-    private void processMessageEvent(BaseEvent subEvent) {
+    private T processMessageEvent(BaseEvent subEvent) {
         String subtype = ((MessageEvent) subEvent).getSubtype();
         if (null == subtype) {
-            eventProcessor.process((MessageEvent) subEvent);
+            return (T) eventProcessor.process((MessageEvent) subEvent);
         } else {
             switch (subtype) {
                 case BOT_MESSAGE_TYPE: {
-                    eventProcessor.process(new BotMessageEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new BotMessageEvent((MessageEvent) subEvent));
                 }
                 case THREAD_BROADCAST_TYPE: {
-                    eventProcessor.process(new ThreadBroadCastMessageEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new ThreadBroadCastMessageEvent((MessageEvent) subEvent));
                 }
                 case MESSAGE_EDITED_TYPE: {
-                    eventProcessor.process(new MessageEditedEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new MessageEditedEvent((MessageEvent) subEvent));
                 }
                 case MESSAGE_DELETED_TYPE: {
-                    eventProcessor.process(new MessageDeletedEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new MessageDeletedEvent((MessageEvent) subEvent));
                 }
                 case MESSAGE_REPLIED_TYPE: {
-                    eventProcessor.process(new MessageRepliedEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new MessageRepliedEvent((MessageEvent) subEvent));
                 }
                 case FILE_SHARE_TYPE: {
-                    eventProcessor.process(new FileShareEvent((MessageEvent) subEvent));
-                    break;
+                    return (T) eventProcessor.process(new FileShareEvent((MessageEvent) subEvent));
                 }
                 default:
                     throw new UnknownTypeException(String.format("Unknown type: %s", subEvent.getType()));

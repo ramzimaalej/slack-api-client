@@ -38,11 +38,11 @@ public class EventHandlerUnitTest {
                 "    \"minute_rate_limited\": 1518467820,\n" +
                 "    \"api_app_id\": \"A123456\"\n" +
                 "}";
-        doNothing().when(eventRouterMock).route(any(AppRateLimitedEvent.class));
+        when(eventRouterMock.execute(any(AppRateLimitedEvent.class))).thenReturn(null);
         //when: parse the payload
         eventHandler.handleEvent(payload);
         //then: an event object should be created
-        verify(eventRouterMock, times(1)).route(any(AppRateLimitedEvent.class));
+        verify(eventRouterMock, times(1)).execute(any(AppRateLimitedEvent.class));
     }
 
     @Test(expected = RuntimeException.class)
@@ -55,7 +55,7 @@ public class EventHandlerUnitTest {
                 "    \"minute_rate_limited\": 1518467820,\n" +
                 "    \"api_app_id\": \"A123456\"\n" +
                 "}";
-        doThrow(new IOException()).when(eventRouterMock).route(any(AppRateLimitedEvent.class));
+        doThrow(new IOException()).when(eventRouterMock).execute(any(AppRateLimitedEvent.class));
         //when: parse the payload
         eventHandler.handleEvent(payload);
     }

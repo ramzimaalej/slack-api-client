@@ -36,7 +36,7 @@ public class EventRouterUnitTest {
         AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
         appRateLimitedEvent.setType(APP_RATE_LIMITED_TYPE);
         // when
-        this.eventRouter.route(appRateLimitedEvent);
+        this.eventRouter.execute(appRateLimitedEvent);
         // then
         verify(eventProcessorMock, times(1)).process(any(AppRateLimitedEvent.class));
     }
@@ -47,7 +47,7 @@ public class EventRouterUnitTest {
         AppRateLimitedEvent appRateLimitedEvent = new AppRateLimitedEvent();
         appRateLimitedEvent.setType("app_rate");
         // when
-        this.eventRouter.route(appRateLimitedEvent);
+        this.eventRouter.execute(appRateLimitedEvent);
     }
 
     @Test(expected = UnknownTypeException.class)
@@ -59,7 +59,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(appMentionEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(appMentionEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(AppMentionEvent.class));
     }
@@ -85,7 +85,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(reactionAddedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ReactionAddedEvent.class));
     }
@@ -99,7 +99,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(appUninstalledEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(AppUninstalledEvent.class));
     }
@@ -113,7 +113,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelArchiveEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelArchiveEvent.class));
     }
@@ -127,7 +127,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelCreatedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelCreatedEvent.class));
     }
@@ -141,7 +141,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelDeletedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelDeletedEvent.class));
     }
@@ -155,7 +155,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelHistoryChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelHistoryChangedEvent.class));
     }
@@ -169,7 +169,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelLeftEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelLeftEvent.class));
     }
@@ -183,7 +183,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelRenameEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelRenameEvent.class));
     }
@@ -197,7 +197,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(channelUnarchiveEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(ChannelUnarchiveEvent.class));
     }
@@ -211,7 +211,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(dndUpdatedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(DndUpdatedEvent.class));
     }
@@ -225,7 +225,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(dndUpdatedUserEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(DndUpdatedUserEvent.class));
     }
@@ -239,7 +239,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(emailDomainChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(EmailDomainChangedEvent.class));
     }
@@ -255,7 +255,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(emojiChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(EmojiAddedEvent.class));
     }
@@ -271,7 +271,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(emojiChangedEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(EmojiRemovedEvent.class));
     }
@@ -286,7 +286,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         verify(eventProcessorMock, times(1)).process(any(MessageEvent.class));
     }
@@ -302,7 +302,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
 
         ArgumentCaptor<BotMessageEvent> argumentCaptor = ArgumentCaptor.forClass(BotMessageEvent.class);
 
@@ -321,7 +321,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         ArgumentCaptor<ThreadBroadCastMessageEvent> argumentCaptor = ArgumentCaptor.forClass(ThreadBroadCastMessageEvent.class);
 
@@ -340,7 +340,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
 
         // then
         ArgumentCaptor<MessageEditedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageEditedEvent.class);
@@ -360,7 +360,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
 
         // then
         ArgumentCaptor<MessageDeletedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageDeletedEvent.class);
@@ -380,7 +380,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
 
         // then
         ArgumentCaptor<MessageRepliedEvent> argumentCaptor = ArgumentCaptor.forClass(MessageRepliedEvent.class);
@@ -400,7 +400,7 @@ public class EventRouterUnitTest {
         eventCallback.setEvent(messageEvent);
         eventCallback.setType(EVENT_CALLBACK_TYPE);
         // when
-        this.eventRouter.route(eventCallback);
+        this.eventRouter.execute(eventCallback);
         // then
         ArgumentCaptor<FileShareEvent> argumentCaptor = ArgumentCaptor.forClass(FileShareEvent.class);
 
